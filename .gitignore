@@ -44,6 +44,8 @@ Temporary Items
 
 bin
 obj
-.o
-.layout
-.depend
+*.o
+*.layout
+*.depend
+*.exe
+main

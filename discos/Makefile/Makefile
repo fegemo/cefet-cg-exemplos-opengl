@@ -1,10 +1,16 @@
 CC=gcc
-CFLAGS=-I.
-DEPS = 
-OBJ = main.o
+OPCOES_COMPILADOR=-I.
+TODOS_ARQUIVOS_PONTOH =
+TODOS_ARQUIVOS_OBJ = main.o
 
-%.o: ../%.c $(DEPS)
-	$(CC) -o $@ $< $(CFLAGS)
+%.o: ../%.c $(TODOS_ARQUIVOS_PONTOH)
+	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
 
-all: $(OBJ)
-	gcc -o $@ $^ $(CFLAGS)
+all: $(TODOS_ARQUIVOS_OBJ)
+	gcc -o main $^ $(OPCOES_COMPILADOR) -lglut -lGL -lm
+
+run: all
+	./main
+
+clean:
+	rm *.o main

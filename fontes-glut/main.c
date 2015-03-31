@@ -1,7 +1,6 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include <GL/glut.h>
 #include <stdlib.h>
+#include <string.h>
 
 void escreveTexto(void * font, char *s, float x, float y, float z){
     int i;

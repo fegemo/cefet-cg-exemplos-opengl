@@ -15,7 +15,7 @@ Para Windows:
     - Você precisa possuir o GLUT (ou freeglut) instalado e ele precisa
       estar acessível para o compilador do CodeBlocks (normalmente o MinGW)
 
-Para Linux (ainda não testei se está funcionando):
+Para Linux:
   1. Abra um terminal
   1. Entre na pasta Makefile (dentro do exemplo de interesse)
   1. Para compilar, execute:
@@ -24,12 +24,12 @@ Para Linux (ainda não testei se está funcionando):
     ```
   1. Para executar o programa, execute:
     ```
-    $ ./nome-do-exemplo
+    $ make run
     ```
 
 ---
 ## Deseja contribuir?
 
 O professor agradece sua ajuda para colocar mais exemplos úteis aqui. Fique à
-vontade para criar um Pull Request (caso já conheça o funcionamento do GitHub)
+vontade para criar um _Pull Request_ (caso já conheça o funcionamento do GitHub)
 ou para conversar comigo sobre como fazer para ajudar.
