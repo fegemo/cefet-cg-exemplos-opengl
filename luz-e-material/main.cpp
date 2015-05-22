@@ -234,9 +234,10 @@ void desenhaCena()
     glPushMatrix();
         glRotatef(anguloEsferaY, 0, 1, 0);
         glRotatef(90, 1, 0, 0);
-        //solidSphere(1.5, esferaLados, esferaLados);
+        solidSphere(1.5, esferaLados, esferaLados);
+        //glutSolidSphere(1.5, esferaLados, esferaLados);
         //glutSolidCube(1.5);
-        glutSolidTeapot(1.5);
+        //glutSolidTeapot(1.5);
     glPopMatrix();
     if (usarTextura) {
         glDisable(GL_TEXTURE_2D);
