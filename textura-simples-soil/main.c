@@ -16,6 +16,8 @@ void init(void)
         SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_INVERT_Y
 	);
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
     if (texturaMario == 0) {
         printf("Erro do SOIL: '%s'\n", SOIL_last_result());
@@ -25,7 +27,7 @@ void init(void)
 
 void desenha(void)
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
     glColor3f (1, 1, 1);
 
     // Habilita o uso de texturas
@@ -50,7 +52,7 @@ void redimensiona(int w, int h)
    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   glOrtho (-2, 2, -2, 2, -1.0, 1.0);
+   glOrtho(-2, 2, -2, 2, -1.0, 1.0);
    glMatrixMode(GL_MODELVIEW);
 }
 
@@ -60,6 +62,10 @@ void teclado(unsigned char key, int x, int y)
       case 27:
          exit(0);
    }
+}
+
+void atualiza() {
+    glutPostRedisplay();
 }
 
 int main(int argc, char** argv)
@@ -75,6 +81,7 @@ int main(int argc, char** argv)
    glutReshapeFunc(redimensiona);
    glutKeyboardFunc(teclado);
    glutDisplayFunc(desenha);
+   glutIdleFunc(atualiza);
    glutMainLoop();
    return 0;
 }

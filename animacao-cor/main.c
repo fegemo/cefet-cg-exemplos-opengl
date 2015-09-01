@@ -1,6 +1,6 @@
 #include <GL/glut.h>
 
-float tomCinza = .3f;
+float tomCinza = .3;
 float incrementoNoTom = .01f;
 
 void desenhaCena(void)

@@ -30,6 +30,7 @@ void desenha(void)
     // Descomente a linha abaixo para ativá-lo
     glEnable(GL_DEPTH_TEST);
 
+
     // Disco branco (menor)
     glColor3f (1, 1, 1);
     desenhaDisco(60, 200, 150, 1);
