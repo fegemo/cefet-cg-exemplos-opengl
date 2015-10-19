@@ -1,5 +1,5 @@
-CC=g++
-OPCOES_COMPILADOR=-I.
+CC= g++
+OPCOES_COMPILADOR= -I/usr/include/SOIL
 TODOS_ARQUIVOS_PONTOH =
 TODOS_ARQUIVOS_OBJ = main.o
 
@@ -7,10 +7,10 @@ TODOS_ARQUIVOS_OBJ = main.o
 	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
 
 all: $(TODOS_ARQUIVOS_OBJ)
-	gcc -o main $^ $(OPCOES_COMPILADOR) -lglut -lGL
+	$(CC) -o main $^ $(OPCOES_COMPILADOR) -lglut -lGL -lGLU -lSOIL
 
 run: all
-	./main
+	(cd .. && exec Makefile/main)
 
 clean:
 	rm *.o main
