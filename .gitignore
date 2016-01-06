@@ -49,3 +49,5 @@ obj
 *.depend
 *.exe
 main
+.layout
+.depend
