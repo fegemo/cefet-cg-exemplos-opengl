@@ -1,4 +1,5 @@
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
 void desenhaCena(void)
 {
@@ -6,10 +7,10 @@ void desenhaCena(void)
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Começa a usar a cor amarela
+    // ComeÃ§a a usar a cor amarela
     glColor3f(1, 1, 0);
 
-    // Começa a desenhar um polígono com os vértices especificados
+    // ComeÃ§a a desenhar um polï¿½gono com os vï¿½rtices especificados
     glBegin(GL_POLYGON);
         glVertex3f(20, 20, 0);
         glVertex3f(80, 20, 0);
@@ -21,7 +22,7 @@ void desenhaCena(void)
     glFlush();
 }
 
-// Inicia algumas variáveis de estado
+// Inicia algumas variï¿½veis de estado
 void inicializa(void)
 {
     // cor para limpar a tela
@@ -56,8 +57,14 @@ void teclado(unsigned char key, int x, int y)
 // Rotina principal
 int main(int argc, char **argv)
 {
-    // Configuração inicial da janela do GLUT
+    // Acordando o GLUT
     glutInit(&argc, argv);
+
+    // Definindo a versÃ£o do OpenGL que vamos usar
+    glutInitContextVersion(1, 1);
+    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+
+    // ConfiguraÃ§Ã£o inicial da janela do GLUT
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);

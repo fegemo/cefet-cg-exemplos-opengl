@@ -1,5 +1,5 @@
 CC=gcc
-OPCOES_COMPILADOR=-I.
+OPCOES_COMPILADOR=-I. -lglut -lGLEW -lGL
 TODOS_ARQUIVOS_PONTOH =
 TODOS_ARQUIVOS_OBJ = main.o
 
@@ -7,7 +7,7 @@ TODOS_ARQUIVOS_OBJ = main.o
 	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
 
 all: $(TODOS_ARQUIVOS_OBJ)
-	gcc -o main $^ $(OPCOES_COMPILADOR) -lglut -lGL
+	gcc -o main $^ $(OPCOES_COMPILADOR)
 
 run: all
 	./main
