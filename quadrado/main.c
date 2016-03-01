@@ -32,7 +32,7 @@ void inicializa(void)
 // Callback de redimensionamento
 void redimensiona(int w, int h)
 {
-   glViewport(0, 0, 500, 500);
+   glViewport(0, 0, w, h);
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
    glOrtho(0, 100, 0, 100, -1, 1);
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 
     // Configuração inicial da janela do GLUT
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
-    glutInitWindowSize(500, 500);
+    glutInitWindowSize(400, 400);
     glutInitWindowPosition(100, 100);
 
     // Abre a janela
