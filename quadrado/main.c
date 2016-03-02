@@ -7,10 +7,10 @@ void desenhaCena(void)
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Começa a usar a cor amarela
-    glColor3f(1, 1, 0);
+    // Começa a usar a cor verde
+    glColor3f(0, 1, 0);
 
-    // Começa a desenhar um pol�gono com os v�rtices especificados
+    // Começa a desenhar um polígono com os vértices especificados
     glBegin(GL_POLYGON);
         glVertex3f(20, 20, 0);
         glVertex3f(80, 20, 0);
@@ -22,7 +22,7 @@ void desenhaCena(void)
     glFlush();
 }
 
-// Inicia algumas vari�veis de estado
+// Inicia algumas variáveis de estado
 void inicializa(void)
 {
     // cor para limpar a tela
