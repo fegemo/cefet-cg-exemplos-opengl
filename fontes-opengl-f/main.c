@@ -1,10 +1,9 @@
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include <stdlib.h>
 
 // Matriz de pixels que descreve a letra "F".
-// Cada item do array È um byte
+// Cada item do array √© um byte
 GLubyte matrizDePixels[24] = {
    0xc0, 0x00,
    0xc0, 0x00,
@@ -36,10 +35,10 @@ void desenha(void)
     // Define a cor de pintura como verde
     glColor3f(.5, 1, .3);
 
-    // Define a posiÁ„o em que vamos comeÁar a desenhar
+    // Define a posi√ß√£o em que vamos come√ßar a desenhar
     glRasterPos2i(20, 20);
-    // Desenha o "F" que est· representado na vari·vel matrizDePixels
-    // ApÛs desenhar, move para a direita 11 pixels
+    // Desenha o "F" que est√° representado na vari√°vel matrizDePixels
+    // Ap√≥s desenhar, move para a direita 11 pixels
     glBitmap (10, 12, 0, 0, 11, 0, matrizDePixels);
     glBitmap (10, 12, 0, 0, 11, 0, matrizDePixels);
     glBitmap (10, 12, 0, 0, 11, 0, matrizDePixels);

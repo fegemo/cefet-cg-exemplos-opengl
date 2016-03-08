@@ -1,4 +1,5 @@
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include <stdio.h>
 
 GLfloat anguloDeRotacao = 0;
@@ -10,14 +11,14 @@ void desenhaCena(void)
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // ComeÁa a usar a cor azul
+    // Come√ßa a usar a cor azul
     glColor3f(.5, .5, 1);
 
     glPushMatrix();
-        // Multiplica a matriz corrente (topo da stack MODELVIEW) pela matriz de rotaÁ„o
+        // Multiplica a matriz corrente (topo da stack MODELVIEW) pela matriz de rota√ß√£o
         glRotatef(anguloDeRotacao, 0, 0, 1);
 
-        // ComeÁa a desenhar um polÌgono com os vÈrtices especificados
+        // Come√ßa a desenhar um pol√≠gono com os v√©rtices especificados
         glBegin(GL_POLYGON);
             glVertex2f(-30, -30);
             glVertex2f( 30, -30);
@@ -30,15 +31,15 @@ void desenhaCena(void)
     glutSwapBuffers();
 }
 
-// Inicia algumas vari·veis de estado
+// Inicia algumas vari√°veis de estado
 void inicializa(void)
 {
     // cor para limpar a tela
     glClearColor(0, 0, 0, 0);      // preto
 
     printf("Comandos:\n---------\n\n");
-    printf("\t+  Aumenta o incremento no ‚ngulo\n");
-    printf("\t-  Diminui o incremento no ‚ngulo\n\n");
+    printf("\t+  Aumenta o incremento no angulo\n");
+    printf("\t-  Diminui o incremento no angulo\n\n");
 }
 
 // Callback de redimensionamento
@@ -82,14 +83,14 @@ void teclado(unsigned char key, int x, int y)
 // Rotina principal
 int main(int argc, char **argv)
 {
-    // ConfiguraÁ„o inicial da janela do GLUT
+    // Configura√ß√£o inicial da janela do GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
 
     // Abre a janela
-    glutCreateWindow("Quadrado com transformaÁ„o de rotaÁ„o");
+    glutCreateWindow("Quadrado com transforma√ß√£o de rota√ß√£o");
 
     // Registra callbacks para alguns eventos
     glutDisplayFunc(desenhaCena);

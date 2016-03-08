@@ -1,6 +1,6 @@
 CC=gcc
 OPCOES_COMPILADOR=-I. -I/usr/include/SOIL
-TODOS_ARQUIVOS_PONTOH =
+TODOS_ARQUIVOS_PONTOH = -lglut -lGLU -lSOIL -lGLEW -lGL -lm
 TODOS_ARQUIVOS_OBJ = main.o
 
 # Para gerar um .o (e.g., main.o), depende-se do

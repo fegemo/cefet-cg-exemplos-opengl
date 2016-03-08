@@ -1,4 +1,5 @@
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
 float tomCinza = .3;
 float incrementoNoTom = .01f;
@@ -9,10 +10,10 @@ void desenhaCena(void)
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Começa a usar a cor amarela
+    // Comeï¿½a a usar a cor amarela
     glColor3f(tomCinza, tomCinza, tomCinza);
 
-    // Começa a desenhar um polígono com os vértices especificados
+    // Comeï¿½a a desenhar um polï¿½gono com os vï¿½rtices especificados
     glBegin(GL_POLYGON);
         glVertex3f(20, 20, 0);
         glVertex3f(80, 20, 0);
@@ -24,7 +25,7 @@ void desenhaCena(void)
     glFlush();
 }
 
-// Inicia algumas variáveis de estado
+// Inicia algumas variï¿½veis de estado
 void inicializa(void)
 {
     // cor para limpar a tela
@@ -63,7 +64,7 @@ void mudaCor(int idx) {
         incrementoNoTom = -incrementoNoTom;
     }
 
-    // Pede ao GLUT para redesenhar a tela, assim que possível
+    // Pede ao GLUT para redesenhar a tela, assim que possï¿½vel
     glutPostRedisplay ();
 
     // Se registra novamente, para que fique sempre sendo chamada
@@ -73,7 +74,7 @@ void mudaCor(int idx) {
 // Rotina principal
 int main(int argc, char **argv)
 {
-    // Configuração inicial da janela do GLUT
+    // Configuraï¿½ï¿½o inicial da janela do GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(500, 500);
@@ -85,7 +86,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(desenhaCena);
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
-    // Registra a função "mudaCor" para executar daqui a 33 milissegundos
+    // Registra a funï¿½ï¿½o "mudaCor" para executar daqui a 33 milissegundos
     glutTimerFunc(33, mudaCor, 0);
 
     glutMainLoop();

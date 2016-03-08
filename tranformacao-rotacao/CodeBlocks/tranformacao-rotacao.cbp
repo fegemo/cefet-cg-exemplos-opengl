@@ -2,33 +2,47 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="tranformacao-rotacao" />
+		<Option title="transformacao-rotacao" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
-			<Target title="Debug">
-				<Option output="bin/Debug/tranformacao-rotacao" prefix_auto="1" extension_auto="1" />
+			<Target title="Windows">
+				<Option output="bin/transformacao-rotacao.ext" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
-				<Option object_output="obj/Debug/" />
-				<Option type="1" />
+				<Option object_output="obj/" />
+				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add library="freeglut" />
+					<Add library="glu32" />
+					<Add library="glew32" />
+					<Add library="opengl32" />
+				</Linker>
+			</Target>
+			<Target title="Linux">
+				<Option output="bin/transformacao-rotacao" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
+				<Option object_output="obj/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="glut" />
+					<Add library="GLU" />
+					<Add library="GLEW" />
+					<Add library="GL" />
+				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="$(#glut.include)" />
+			<Add option="-g" />
 		</Compiler>
-		<Linker>
-			<Add library="freeglut" />
-			<Add library="opengl32" />
-			<Add library="glu32" />
-			<Add library="winmm" />
-			<Add library="gdi32" />
-			<Add directory="$(#glut.lib)" />
-		</Linker>
 		<Unit filename="../main.c">
 			<Option compilerVar="CC" />
 		</Unit>

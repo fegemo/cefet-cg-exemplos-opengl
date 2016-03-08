@@ -1,4 +1,5 @@
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -101,7 +102,7 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(300, 100);
     glutInitWindowPosition (100, 100);
-    glutCreateWindow(argv[0]);
+    glutCreateWindow("Fontes em OpenGL");
     init();
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);

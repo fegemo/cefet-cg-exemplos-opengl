@@ -1,4 +1,5 @@
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -25,9 +26,9 @@ void desenhaDisco(float raio, float x, float y, float z) {
 void desenha(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // Mesmo com valores 'Z' diferentes, o disco branco não aparece
-    // até que ativemos o teste de profundidade do OpenGL
-    // Descomente a linha abaixo para ativá-lo
+    // Mesmo com valores 'Z' diferentes, o disco branco nï¿½o aparece
+    // atï¿½ que ativemos o teste de profundidade do OpenGL
+    // Descomente a linha abaixo para ativï¿½-lo
     glEnable(GL_DEPTH_TEST);
 
 

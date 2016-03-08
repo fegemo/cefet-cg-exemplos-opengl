@@ -1,4 +1,5 @@
-#include <GL/glut.h>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 
 struct ponto {
     float x, y;
@@ -18,13 +19,13 @@ void desenhaCena(void)
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Começa a usar a cor amarela
+    // Comeï¿½a a usar a cor amarela
     glColor3f(1, 0, 0.5f);
 
-    // Começa a desenhar um polígono com os vértices especificados
-    // ATENÇÃO: esta não é a melhor forma para movimentar um objeto
-    //          veremos na aula sobre "Transformações" a melhor forma
-    //          basicamente, vamos "desenhar o objeto na origem" e transladá-lo para sua posição
+    // Comeï¿½a a desenhar um polï¿½gono com os vï¿½rtices especificados
+    // ATENï¿½ï¿½O: esta nï¿½o ï¿½ a melhor forma para movimentar um objeto
+    //          veremos na aula sobre "Transformaï¿½ï¿½es" a melhor forma
+    //          basicamente, vamos "desenhar o objeto na origem" e transladï¿½-lo para sua posiï¿½ï¿½o
     glBegin(GL_POLYGON);
         glVertex3f(posicaoQuadrado.x, posicaoQuadrado.y, 0);
         glVertex3f(posicaoQuadrado.x + tamanhoQuadrado.largura, posicaoQuadrado.y, 0);
@@ -36,7 +37,7 @@ void desenhaCena(void)
     glFlush();
 }
 
-// Inicia algumas variáveis de estado
+// Inicia algumas variï¿½veis de estado
 void inicializa(void)
 {
     // cor para limpar a tela
@@ -80,11 +81,11 @@ void movimentoMouse(int x, int y) {
 }
 
 void atualiza(int indice) {
-    // faz o quadrado andar na direção do ponteiro
+    // faz o quadrado andar na direï¿½ï¿½o do ponteiro
     posicaoQuadrado.x += (posicaoMouse.x - posicaoQuadrado.x)/50.0f;
     posicaoQuadrado.y += (posicaoMouse.y - posicaoQuadrado.y)/50.0f;
 
-    // Pede ao GLUT para redesenhar a tela, assim que possível
+    // Pede ao GLUT para redesenhar a tela, assim que possï¿½vel
     glutPostRedisplay ();
 
     // Se registra novamente, para que fique sempre sendo chamada (30 FPS)
@@ -94,21 +95,21 @@ void atualiza(int indice) {
 // Rotina principal
 int main(int argc, char **argv)
 {
-    // Configuração inicial da janela do GLUT
+    // Configuraï¿½ï¿½o inicial da janela do GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
 
-    glutCreateWindow("50 tons de cinza");
+    glutCreateWindow("Segue Mouse com Atraso");
     inicializa();
 
     glutDisplayFunc(desenhaCena);
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
-    // Registra a função "movimentoMouse" para executar sempre que o mouse mexer
+    // Registra a funï¿½ï¿½o "movimentoMouse" para executar sempre que o mouse mexer
     glutPassiveMotionFunc(movimentoMouse);
-    // Registra a função "atualiza" para executar daqui a 0 milissegundos
+    // Registra a funï¿½ï¿½o "atualiza" para executar daqui a 0 milissegundos
     glutTimerFunc(0, atualiza, 0);
 
     glutMainLoop();
