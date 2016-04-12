@@ -1,0 +1,49 @@
+CC=gcc
+OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL
+TODOS_ARQUIVOS_PONTOH =
+TODOS_ARQUIVOS_OBJ = main.o
+
+# Para gerar um .o (e.g., main.o), depende-se do
+# arquivo de mesmo nome, porém na pasta anterior (../)
+# e com a extensão .c, além de se depender dos arquivos
+# .h
+%.o: ../%.c $(TODOS_ARQUIVOS_PONTOH)
+	# Para gerar um .o, usa-se o gcc com a opção -c
+	# E.g.: gcc -o main.o -c ../main.c -I.
+	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
+
+
+
+# all é o target padrão do make (i.e., se digitar apenas
+# "make" no terminal, vai executar esta regra)
+# Aqui, vamos compilar o programa principal, juntando
+# todos os arquivos objeto separados.
+all: $(TODOS_ARQUIVOS_OBJ)
+	# Para fazer a compilação final (compilação + linkedição),
+	# chamamos o gcc sem passar a opção -c. Além disso, é
+	# necessário informar quais bibliotecas estão sendo usadas,
+	# como a GLUT e o OPENGL (-lglut -lGL).
+	#
+	# -lglut diz ao gcc para procurar pelo arquivo libglut.a ou glut.lib
+	# -lGL diz ao gcc para procurar pelo arquivo libGL.a ou GL.lib
+	gcc -o main $^ $(OPCOES_COMPILADOR) -lglut -lGL
+
+
+
+# run é um taget tipicamente usado para executar o programa.
+# A idéia é que ao digitar "make run", o programa execute.
+# Ao colocarmos "all" como dependência do target "run",
+# o make verifica se o programa está compilado antes de
+# executar. Se não estiver, ele compilalará primeiro (na
+# verdade, ele executará o target "all", cujo objetivo é
+# compilar o programa).
+run: all
+	./main
+
+
+
+# clean é um target que é tipicamente usado para apagar
+# arquivos temporários da compilação, como os .o.
+clean:
+	# Aqui estamos apagando os arquivos .o e o executável, "main".
+	rm *.o main
