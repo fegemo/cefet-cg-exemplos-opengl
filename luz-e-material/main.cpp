@@ -49,32 +49,32 @@ void informacoesTela(void)
     glColor3f(.85f, .85f, .85f);
 
     glRasterPos3f(-1.0, 1.10, -2.0);
-    escreveTextoNaTela((void*)font, "Iluminacao (l): ");
+    escreveTextoNaTela((void*)font, (char*)"Iluminacao (l): ");
     escreveTextoNaTela((void*)font, (char*)(isLightingOn ? "ligada" : "desligada"));
 
     floatParaString(theStringBuffer, 4, m);
     glRasterPos3f(-1.0, 1.00, -2.0);
-    escreveTextoNaTela((void*)font, "Luz ambiente global: ");
+    escreveTextoNaTela((void*)font, (char*)"Luz ambiente global: ");
     glRasterPos3f(-1.0, 0.95, -2.0);
-    escreveTextoNaTela((void*)font, "  - Intensidade (m/M): ");
+    escreveTextoNaTela((void*)font, (char*)"  - Intensidade (m/M): ");
     escreveTextoNaTela((void*)font, theStringBuffer);
 
     glRasterPos3f(-1.0, 0.85, -2.0);
-    escreveTextoNaTela((void*)font, "Luz branca: ");
+    escreveTextoNaTela((void*)font, (char*)"Luz branca: ");
     glRasterPos3f(-1.0, 0.80, -2.0);
-    escreveTextoNaTela((void*)font, "  - Intensidade difusa (d/D): ");
+    escreveTextoNaTela((void*)font, (char*)"  - Intensidade difusa (d/D): ");
     floatParaString(theStringBuffer, 4, d);
     escreveTextoNaTela((void*)font, theStringBuffer);
     glRasterPos3f(-1.0, 0.75, -2.0);
-    escreveTextoNaTela((void*)font, "  - Intensidade especular (e/E): ");
+    escreveTextoNaTela((void*)font, (char*)"  - Intensidade especular (e/E): ");
     floatParaString(theStringBuffer, 4, e);
     escreveTextoNaTela((void*)font, theStringBuffer);
 
 
     glRasterPos3f(-1.0, 0.65, -2.0);
-    escreveTextoNaTela((void*)font, "Material: ");
+    escreveTextoNaTela((void*)font, (char*)"Material: ");
     glRasterPos3f(-1.0, 0.60, -2.0);
-    escreveTextoNaTela((void*)font, "  - Expoente especular (s/S): ");
+    escreveTextoNaTela((void*)font, (char*)"  - Expoente especular (s/S): ");
     floatParaString(theStringBuffer, 5, s);
     escreveTextoNaTela((void*)font, theStringBuffer);
 

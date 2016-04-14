@@ -1,6 +1,6 @@
 CC=gcc
-OPCOES_COMPILADOR=-I. -I/usr/include/SOIL
-TODOS_ARQUIVOS_PONTOH = -lglut -lGLU -lSOIL -lGLEW -lGL -lm
+OPCOES_COMPILADOR=-I. -I/usr/include/SOIL -lglut -lGLU -lSOIL -lGLEW -lGL -lm
+TODOS_ARQUIVOS_PONTOH =
 TODOS_ARQUIVOS_OBJ = main.o
 
 %.o: ../%.c $(TODOS_ARQUIVOS_PONTOH)
@@ -11,7 +11,6 @@ all: $(TODOS_ARQUIVOS_OBJ)
 
 run: all
 	(cd .. && exec Makefile/main)
-
 
 clean:
 	rm *.o main
