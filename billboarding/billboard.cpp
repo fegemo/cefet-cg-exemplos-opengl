@@ -114,7 +114,6 @@ void drawScene(void)
 
     glColor3f(0,0,0);
     glLineWidth(10);
-    gl
    glBegin(GL_POLYGON);
       glVertex3f(-2.5, -5.0, .1f);
       glVertex3f(2.5, -5.0, .1f);
