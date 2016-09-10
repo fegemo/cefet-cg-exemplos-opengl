@@ -2,6 +2,7 @@
 
 Para manter a razão de aspecto do mundo e ainda permitir que o usuário
 redimensione a janela, há duas possibilidades:
+
 1. Fazer com que o mundo inteiro caiba dentro da janela
 1. Fazer com que o mundo ocupe a janela inteira
 
