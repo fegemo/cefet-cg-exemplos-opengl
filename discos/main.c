@@ -64,7 +64,7 @@ void teclado(unsigned char key, int x, int y)
 int main(int argc, char** argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(400, 300);
     glutInitWindowPosition(100, 100);
 
