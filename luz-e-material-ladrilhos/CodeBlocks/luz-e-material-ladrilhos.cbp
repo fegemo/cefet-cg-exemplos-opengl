@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="luz-e-material-simples" />
+		<Option title="luz-e-material-ladrilhos" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows">
-				<Option output="bin/luz-e-material-simples.ext" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/luz-e-material-ladrilhos.ext" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
 				<Option type="0" />
@@ -26,7 +26,7 @@
 				</Linker>
 			</Target>
 			<Target title="Linux">
-				<Option output="bin/luz-e-material-simples" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/luz-e-material-ladrilhos" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
 				<Option type="0" />
