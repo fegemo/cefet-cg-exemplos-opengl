@@ -104,7 +104,7 @@ void inicializaLadrilhos() {
         ladrilhos[i].posicao.x = ((i % 2) - 0.5)  * ladrilhos[0].dim.largura;
         ladrilhos[i].posicao.y =  ((i / 2) - 0.5)  * ladrilhos[0].dim.altura;
         ladrilhos[i].posicao.z = 0;
-        ladrilhos[i].mat = (i / 2 == 0 ? plasticoAzul : plasticoAzul);
+        ladrilhos[i].mat = (i / 2 == 0 ? marromFosco : plasticoAzul);
         ladrilhos[i].textura = (i % 2 == 1    // se estamos na coluna da direita
             ? (i / 2 == 0                     // se linha de baixo
                 ? texturaMadeira
