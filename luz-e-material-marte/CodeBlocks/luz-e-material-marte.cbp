@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="luz-e-material" />
+		<Option title="luz-e-material-marte" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows">
-				<Option output="bin/luz-e-material.ext" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/luz-e-material-marte.ext" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
 				<Option type="0" />
@@ -25,7 +25,7 @@
 				</Linker>
 			</Target>
 			<Target title="Linux">
-				<Option output="bin/luz-e-material" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/luz-e-material-marte" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
 				<Option type="0" />

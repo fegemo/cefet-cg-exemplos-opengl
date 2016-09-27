@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <SOIL.h>
+#include <SOIL/SOIL.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <cmath>

@@ -42,6 +42,76 @@ ladrilho ladrilhos[4];
 ponto posicaoDaLuz;
 int subdivisoesLadrilho = 4;
 int modoDeArame = 0;
+int modoSombreamento = 0;
+
+void carregaTextura(int *textura, char* nomeDoArquivo) {
+    *textura = SOIL_load_OGL_texture(
+      nomeDoArquivo,
+      SOIL_LOAD_AUTO,
+      SOIL_CREATE_NEW_ID,
+      SOIL_FLAG_INVERT_Y);
+
+    if (*textura == 0) {
+        printf("Erro ao carregar textura '%s': %s\n",
+            nomeDoArquivo,
+            SOIL_last_result());
+    }
+}
+
+/// Configura os materiais (plastico e marrom) e a fonte de luz posicional.
+///
+void configuraIluminacao() {
+    plasticoAzul.ambiente = (cor){ 0.1, 0.1, 0.1, 1 };
+    plasticoAzul.emissiva = (cor){ 0, 0, 0, 1 };
+    plasticoAzul.difusa = (cor){ 0.1, 0.1, 0.4, 1 };
+    plasticoAzul.especular = (cor){ 1, 1, 1, 1 };
+    plasticoAzul.brilhosidade[0] = 100;
+
+    marromFosco.ambiente = (cor){ 0.1, 0.1, 0.1, 1 };
+    marromFosco.emissiva = (cor){ 0, 0, 0, 1 };
+    marromFosco.difusa = (cor){ .49, .22, .02, 1 };
+    marromFosco.especular = (cor){ 0, 0, 0, 1 };
+    marromFosco.brilhosidade[0] = 0;
+
+
+    posicaoDaLuz = (ponto){ 0, 0, -1, 1 };
+    cor corDaLuz = { 1.0, 1.0, 1.0, 1.0 };
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_SMOOTH);
+
+    glLightfv(GL_LIGHT0, GL_POSITION, posicaoDaLuz.v);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, corDaLuz.v);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, corDaLuz.v);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05f);
+
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+}
+
+/// Configura os 4 ladrilhos:
+///  - Em cima: plastico sem textura, com textura
+///  - Abaixo: marrom sem textura, com textura
+void inicializaLadrilhos() {
+    int texturaPlastico, texturaMadeira;
+    carregaTextura(&texturaPlastico, "plastico.jpg");
+    carregaTextura(&texturaMadeira, "madeira.jpg");
+
+    int i;
+    for (i = 0; i < 4; i++) {
+        ladrilhos[i].dim = (dimensoes){ 2.0f, 2.0f };
+        ladrilhos[i].posicao.x = ((i % 2) - 0.5)  * ladrilhos[0].dim.largura;
+        ladrilhos[i].posicao.y =  ((i / 2) - 0.5)  * ladrilhos[0].dim.altura;
+        ladrilhos[i].posicao.z = 0;
+        ladrilhos[i].mat = (i / 2 == 0 ? plasticoAzul : plasticoAzul);
+        ladrilhos[i].textura = (i % 2 == 1    // se estamos na coluna da direita
+            ? (i / 2 == 0                     // se linha de baixo
+                ? texturaMadeira
+                : texturaPlastico)
+            : 0);
+    }
+}
 
 /// Desenha um retângulo que está subdivido em retângulos menores em uma
 /// quantidade igual a "subdivisoes" tanto no eixo x, quanto no eixo y.
@@ -110,75 +180,6 @@ void desenhaLadrilho(ladrilho l) {
     glDisable(GL_TEXTURE_2D);
 }
 
-void carregaTextura(int *textura, char* nomeDoArquivo) {
-    *textura = SOIL_load_OGL_texture(
-      nomeDoArquivo,
-      SOIL_LOAD_AUTO,
-      SOIL_CREATE_NEW_ID,
-      SOIL_FLAG_INVERT_Y);
-
-    if (*textura == 0) {
-        printf("Erro ao carregar textura '%s': %s\n",
-            nomeDoArquivo,
-            SOIL_last_result());
-    }
-}
-
-/// Configura os materiais (plastico e marrom) e a fonte de luz posicional.
-///
-void configuraIluminacao() {
-    plasticoAzul.ambiente = (cor){ 0.1, 0.1, 0.1, 1 };
-    plasticoAzul.emissiva = (cor){ 0, 0, 0, 1 };
-    plasticoAzul.difusa = (cor){ 0.1, 0.1, 0.4, 1 };
-    plasticoAzul.especular = (cor){ 1, 1, 1, 1 };
-    plasticoAzul.brilhosidade[0] = 100;
-
-    marromFosco.ambiente = (cor){ 0.1, 0.1, 0.1, 1 };
-    marromFosco.emissiva = (cor){ 0, 0, 0, 1 };
-    marromFosco.difusa = (cor){ .49, .22, .02, 1 };
-    marromFosco.especular = (cor){ 0, 0, 0, 1 };
-    marromFosco.brilhosidade[0] = 0;
-
-
-    posicaoDaLuz = (ponto){ 0, 0, -1, 1 };
-    cor corDaLuz = { 1.0, 1.0, 1.0, 1.0 };
-    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glShadeModel (GL_SMOOTH);
-
-    glLightfv(GL_LIGHT0, GL_POSITION, posicaoDaLuz.v);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, corDaLuz.v);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, corDaLuz.v);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05f);
-
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
-
-    glEnable(GL_LIGHT0);
-    glEnable(GL_DEPTH_TEST);
-}
-
-/// Configura os 4 ladrilhos:
-///  - Em cima: plastico sem textura, com textura
-///  - Abaixo: marrom sem textura, com textura
-void inicializaLadrilhos() {
-    int texturaPlastico, texturaMadeira;
-    carregaTextura(&texturaPlastico, "plastico.jpg");
-    carregaTextura(&texturaMadeira, "madeira.jpg");
-
-    int i;
-    for (i = 0; i < 4; i++) {
-        ladrilhos[i].dim = (dimensoes){ 2.0f, 2.0f };
-        ladrilhos[i].posicao.x = ((i % 2) - 0.5)  * ladrilhos[0].dim.largura;
-        ladrilhos[i].posicao.y =  ((i / 2) - 0.5)  * ladrilhos[0].dim.altura;
-        ladrilhos[i].posicao.z = 0;
-        ladrilhos[i].mat = (i / 2 == 0 ? marromFosco : plasticoAzul);
-        ladrilhos[i].textura = (i % 2 == 1    // se estamos na coluna da direita
-            ? (i / 2 == 0                     // se linha de baixo
-                ? texturaMadeira
-                : texturaPlastico)
-            : 0);
-    }
-}
-
 void desenha(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
@@ -189,6 +190,12 @@ void desenha(void) {
 
     glColor3f(1, 1, 1);
     glEnable(GL_LIGHTING);
+
+    if (modoSombreamento == 0) {
+        glShadeModel(GL_SMOOTH);
+    } else {
+      glShadeModel(GL_FLAT);
+    }
     // desenha objetos
     glPushMatrix();
         // adentra o sistema de coordenadas 4u no sentido da tela
@@ -239,6 +246,10 @@ void teclado(unsigned char tecla, int x, int y) {
         case '_':
             subdivisoesLadrilho = fmax(1, subdivisoesLadrilho - 1);
             break;
+        case 'm':
+        case 'M':
+            modoSombreamento = (modoSombreamento + 1) % 2;
+            break;
     }
     glutPostRedisplay();
 }
@@ -247,6 +258,7 @@ void imprimeInstrucoes() {
       printf("Ajuda:\n");
       printf("  Aperte 'p' para alternar entre modo de arame e preenchido\n");
       printf("  Aperte '+'/'-' para aumentar/diminuir o número de subdivisões.\n");
+      printf("  Aperte 'm' para alternar o modelo de sombreamento entre GL_FLAT e GL_SMOOTH.\n");
       printf("  Movimente o mouse para mudar a posição da fonte de luz posicional.\n");
 }
 
