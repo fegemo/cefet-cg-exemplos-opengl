@@ -3,7 +3,7 @@
 
 void iniciaLista(listaEncadeada *l) {
     l->primeiro = (struct no*) malloc(sizeof(struct no));
-    l->ultimo = NULL;
+    l->ultimo = l->primeiro;
     l->primeiro->proximo = l->ultimo;
     l->tamanho = 0;
 }

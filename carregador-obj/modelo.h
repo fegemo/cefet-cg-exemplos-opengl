@@ -6,6 +6,10 @@
 struct modelo {
     struct malha malha;
     int listaVisualizacao;
+    int qtdeCoordenadas;
+    int qtdeCoordenadasTextura;
+    int qtdeNormais;
+    int qtdeFaces;
 };
 
 struct modelo *carregaModelo(char *);

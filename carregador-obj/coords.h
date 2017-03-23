@@ -2,7 +2,7 @@
 #define _COORDS_
 
 typedef struct coords {
-    float v[4];
+    float v[3];
 } ponto, vetor;
 
 #endif

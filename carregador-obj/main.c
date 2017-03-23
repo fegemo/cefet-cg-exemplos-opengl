@@ -6,34 +6,61 @@
 #include "modelo.h"
 
 struct modelo *modelo;
+float rotacaoCena = 0;
+vetor inicioMovimentoMouse;
 
 // Rotina de desenho
 void desenhaMinhaCena()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glColor3f(0.0, 1.0, 0.0);
     // Desenha um polígono por seus vértices
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glPushMatrix();
         glTranslatef(0, 0, -2);
         glScalef(0.25f, 0.25f, 0.25f);
-        // glCallList(modelo);
+        glRotatef(rotacaoCena, 0, 1, 0);
+
+        glEnable(GL_LIGHTING);
+        glPolygonMode(GL_FRONT, GL_FILL);
+        glColor3f(0.0, 0.67f, 0.0);
+        desenhaModelo(modelo);
+
+        glDisable(GL_LIGHTING);
+        glPolygonMode(GL_FRONT, GL_LINE);
+        glColor3f(0.2f, 0.35f, 0.2f);
         desenhaModelo(modelo);
     glPopMatrix();
 
-    glFlush();
+    glutSwapBuffers();
 }
 
-// NOVIDADE: uma função que vamos chamar dentro
-//    do "main"
 // Inicia algumas variáveis de estado do OpenGL
 void setup()
 {
     // define qual é a cor do fundo
     glClearColor(1.0, 1.0, 1.0, 0.0); // branco
     glCullFace(GL_NONE);
+    glEnable(GL_DEPTH_TEST);
     modelo = carregaModelo("arvore.obj");
+
+    ponto posicaoDaLuz = (ponto){ { 3.5f, 1, 3 } };
+    vetor corDaLuz = (vetor){ {1.0, 1.0, 1.0} };
+    glShadeModel(GL_FLAT);
+
+    glLightfv(GL_LIGHT0, GL_POSITION, posicaoDaLuz.v);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, corDaLuz.v);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, corDaLuz.v);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 2.5f);
+
+    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 }
 
 void redimensionada(int width, int height)
@@ -49,7 +76,6 @@ void redimensionada(int width, int height)
    glLoadIdentity();
 }
 
-// NOVIDADE: callback de "keyboard"
 void teclaPressionada(unsigned char key, int x, int y)
 {
     // vê qual tecla foi pressionada
@@ -63,6 +89,27 @@ void teclaPressionada(unsigned char key, int x, int y)
     }
 }
 
+void movimentoMouse(int x, int y) {
+    int deslocX = x - inicioMovimentoMouse.v[0];
+
+    rotacaoCena += ((float)deslocX)/glutGet(GLUT_WINDOW_WIDTH) * 2 * 180.0f;
+    inicioMovimentoMouse.v[0] = x;
+    inicioMovimentoMouse.v[1] = y;
+    glutPostRedisplay();
+}
+
+void cliqueMouse(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON) {
+        if (state == GLUT_DOWN) {
+            // pressionou o botão... começar a rotação
+            inicioMovimentoMouse.v[0] = x;
+            inicioMovimentoMouse.v[1] = y;
+        } else {
+            // largou o botão... terminar rotação
+        }
+    }
+}
+
 // Função principal
 int main(int argc, char** argv)
 {
@@ -71,7 +118,7 @@ int main(int argc, char** argv)
    glutInitContextVersion(1, 1);
    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
-   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitWindowSize(500, 500);
 
    glutCreateWindow("Quadrado");
@@ -80,6 +127,8 @@ int main(int argc, char** argv)
    glutDisplayFunc(desenhaMinhaCena);
    glutReshapeFunc(redimensionada);
    glutKeyboardFunc(teclaPressionada);
+   glutMotionFunc(movimentoMouse);
+   glutMouseFunc(cliqueMouse);
 
    // Configura valor inicial de algumas
    // variáveis de estado do OpenGL

@@ -30,5 +30,6 @@ void adicionaCoordenadaTexturaMalha(struct malha*, ponto*);
 void adicionaNormalMalha(struct malha*, vetor*);
 struct face *novaFaceMalha(struct malha *);
 void adicionaVerticeFace(struct malha*, struct face*, int, int, int);
+void consertaNormais(struct malha*, int);
 
 #endif
