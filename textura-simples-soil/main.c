@@ -1,9 +1,9 @@
-#include <SOIL.h>
+#include <SOIL/SOIL.h>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 
 GLuint texturaMario;
 
@@ -34,10 +34,10 @@ void desenha(void)
     // Habilita o uso de texturas
     glEnable(GL_TEXTURE_2D);
 
-    // Come�a a usar a textura que criamos
+    // Começa a usar a textura que criamos
     glBindTexture(GL_TEXTURE_2D, texturaMario);
-    glBegin(GL_QUADS);
-        // Associamos um canto da textura para cada v�rtice
+    glBegin(GL_TRIANGLE_FAN);
+        // Associamos um canto da textura para cada vértice
         glTexCoord2f(0, 0); glVertex3f(-1, -1,  0);
         glTexCoord2f(1, 0); glVertex3f( 1, -1,  0);
         glTexCoord2f(1, 1); glVertex3f( 1,  1,  0);
