@@ -26,15 +26,15 @@ void desenhaDisco(float raio, float x, float y, float z) {
 void desenha(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // Mesmo com valores 'Z' diferentes, o disco branco n�o aparece
-    // at� que ativemos o teste de profundidade do OpenGL
-    // Descomente a linha abaixo para ativ�-lo
-    glEnable(GL_DEPTH_TEST);
+    // Mesmo com valores 'Z' diferentes, o disco branco não aparece
+    // até que ativemos o teste de profundidade do OpenGL
+    // Descomente a linha abaixo para ativá-lo
+//    glEnable(GL_DEPTH_TEST);
 
 
     // Disco branco (menor)
     glColor3f (1, 1, 1);
-    desenhaDisco(60, 200, 150, 1);
+    desenhaDisco(60, 200, 150, 1);  // coordenada z "trazendo pra frente"
 
     // Disco vermelho (maior)
     glColor3f (1, 0, 0);
