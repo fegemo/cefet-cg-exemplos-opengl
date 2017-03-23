@@ -1,5 +1,16 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include "texto.h"
+
+#define ORTOGONAL 1
+#define PERSPECTIVA -1
+
+float anguloDeRotacao = 0;
+char ladoQueEstaMostrando[20];
+int projecao = ORTOGONAL;
 
 // Rotina de desenho
 void desenhaMinhaCena()
@@ -7,19 +18,26 @@ void desenhaMinhaCena()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glColor3f(0.0, 1.0, 0.0);
+    glPushMatrix();
+        glRotatef(anguloDeRotacao, 1, 0, 0);
 
-    glPolygonMode(GL_BACK, GL_FILL);  // Lado de trás: preenchido
-    glPolygonMode(GL_FRONT, GL_LINE); // Da frente: contorno
+        glPolygonMode(GL_FRONT, GL_FILL);  // Lado de trás: preenchido
+        glPolygonMode(GL_BACK, GL_LINE); // Da frente: contorno
 
-    // Desenha um polígono por seus vértices
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(20.0, 20.0, 0.0);
-        glVertex3f(80.0, 20.0, 0.0);
-        glVertex3f(80.0, 80.0, 0.0);
-        glVertex3f(20.0, 80.0, 0.0);
-    glEnd();
+        // Desenha um quadrado de lado 60
+        glBegin(GL_TRIANGLE_FAN);
+            glVertex2i(-30.0, -30.0);
+            glVertex2i( 30.0, -30.0);
+            glVertex2i( 30.0,  30.0);
+            glVertex2i(-30.0,  30.0);
+        glEnd();
 
-    glFlush();
+    glPopMatrix();
+
+    glColor3f(0.0, 0.0, 0.0);
+    escreveTexto(ladoQueEstaMostrando, 20, 20);
+
+    glutSwapBuffers();
 }
 
 // Inicia algumas variáveis de estado do OpenGL
@@ -29,17 +47,27 @@ void setup()
     glClearColor(1.0, 1.0, 1.0, 0.0); // branco
 }
 
+void configuraProjecao() {
+    int width = glutGet(GLUT_WINDOW_WIDTH);
+    int height = glutGet(GLUT_WINDOW_HEIGHT);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    if (projecao == ORTOGONAL) {
+        glOrtho(-50, 50, -50, 50, -100, 100);
+    } else if (projecao == PERSPECTIVA) {
+        gluPerspective(60, ((float)width/height), 1, 100);
+    }
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0, 0, -75);
+}
+
 void redimensionada(int width, int height)
 {
-   // left, bottom, right, top
-   glViewport(0, 0, width, height);
-
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-   glOrtho(0.0, 100.0, 0.0, 100.0, -1.0, 1.0);
-
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
+    // left, bottom, right, top
+    glViewport(0, 0, width, height);
+    configuraProjecao();
 }
 
 void teclaPressionada(unsigned char key, int x, int y)
@@ -50,34 +78,80 @@ void teclaPressionada(unsigned char key, int x, int y)
     case 27:      // Tecla "ESC"
         exit(0);  // Sai da aplicação
         break;
+    case '+':
+    case '=':
+        anguloDeRotacao += 1;
+        break;
+    case '-':
+    case '_':
+        anguloDeRotacao -= 1;
+        break;
+    case 'p':
+    case 'P':
+        projecao *= -1;
+        configuraProjecao();
+        break;
     default:
         break;
     }
 }
 
+int tempoNoFrame = 0;
+int momentoAnterior;
+float fps = 0;
+
+void atualiza() {
+    int momentoAtual = glutGet(GLUT_ELAPSED_TIME);
+    tempoNoFrame += momentoAtual - momentoAnterior;
+    if (tempoNoFrame >= 30) {
+        tempoNoFrame -= 30;
+        anguloDeRotacao += 1;
+        if ((int)floor((anguloDeRotacao + 90) / 180) % 2 == 0 && strcmp(ladoQueEstaMostrando, "frente") != 0) {
+            strcpy(ladoQueEstaMostrando, "frente");
+        } else if ((int)floor((anguloDeRotacao + 90) / 180) % 2 == 1 && strcmp(ladoQueEstaMostrando, "traz") != 0) {
+            strcpy(ladoQueEstaMostrando, "traz");
+        }
+
+    }
+    // calcula quantos quadros por segundo está chamando a idle
+    fps = 1000.0 / (momentoAtual - momentoAnterior);
+
+    momentoAnterior = momentoAtual;
+    glutPostRedisplay();
+}
+
+char tituloDaJanela[100];
+void atualizaFPS(int idx) {
+    sprintf(tituloDaJanela, "Orientação de Polígonos (%.2f)", fps);
+    glutSetWindowTitle(tituloDaJanela);
+    glutTimerFunc(1000, atualizaFPS, 0);
+}
+
 // Função principal
 int main(int argc, char** argv)
 {
-   glutInit(&argc, argv);
+    glutInit(&argc, argv);
 
-   glutInitContextVersion(1, 1);
-   glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
+    glutInitContextVersion(1, 1);
+    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
-   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
-   glutInitWindowSize(500, 500);
-   glutInitWindowPosition(100, 100);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowSize(500, 500);
+    glutInitWindowPosition(100, 100);
 
-   glutCreateWindow("Orientação de Polígonos");
+    glutCreateWindow("Orientação de Polígonos");
 
-   // Registra callbacks para eventos
-   glutDisplayFunc(desenhaMinhaCena);
-   glutReshapeFunc(redimensionada);
-   glutKeyboardFunc(teclaPressionada);
+    // Registra callbacks para eventos
+    glutDisplayFunc(desenhaMinhaCena);
+    glutReshapeFunc(redimensionada);
+    glutKeyboardFunc(teclaPressionada);
+    glutIdleFunc(atualiza);
+    glutTimerFunc(0, atualizaFPS, 0);
 
-   // Configura valor inicial de algumas
-   // variáveis de estado do OpenGL
-   setup();
+    // Configura valor inicial de algumas
+    // variáveis de estado do OpenGL
+    setup();
 
-   glutMainLoop();
-   return 0;
+    glutMainLoop();
+    return 0;
 }

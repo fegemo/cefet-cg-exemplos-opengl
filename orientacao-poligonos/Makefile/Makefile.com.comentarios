@@ -1,7 +1,7 @@
 CC=gcc
-OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL
+OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL -lm
 TODOS_ARQUIVOS_PONTOH =
-TODOS_ARQUIVOS_OBJ = main.o
+TODOS_ARQUIVOS_OBJ = main.o texto.o
 
 # Para gerar um .o (e.g., main.o), depende-se do
 # arquivo de mesmo nome, porém na pasta anterior (../)

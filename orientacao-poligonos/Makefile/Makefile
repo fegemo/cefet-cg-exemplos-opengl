@@ -1,7 +1,7 @@
 CC=gcc
-OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL
-TODOS_ARQUIVOS_PONTOH =
-TODOS_ARQUIVOS_OBJ = main.o
+OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL -lm
+TODOS_ARQUIVOS_PONTOH = 
+TODOS_ARQUIVOS_OBJ = main.o texto.o
 
 %.o: ../%.c $(TODOS_ARQUIVOS_PONTOH)
 	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
@@ -13,4 +13,4 @@ run: all
 	./main
 
 clean:
-	rm *.o main
+	rm -f *.o main
