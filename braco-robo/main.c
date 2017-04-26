@@ -1,4 +1,5 @@
 #include <GL/freeglut.h>
+#include <stdio.h>
 
 int anguloOmbro = 0, anguloCutuvelo = 0;
 
@@ -12,21 +13,21 @@ void desenha()
 {
    glClear (GL_COLOR_BUFFER_BIT);
    glPushMatrix();
-   glTranslatef (-1.0, 0.0, 0.0);
-   glRotatef ((GLfloat) anguloOmbro, 0.0, 0.0, 1.0);
-   glTranslatef (1.0, 0.0, 0.0);
-   glPushMatrix();
-   glScalef (2.0, 0.4, 1.0);
-   glutWireCube (1.0);
-   glPopMatrix();
+       glTranslatef (-1.0, 0.0, 0.0);
+       glRotatef ((GLfloat) anguloOmbro, 0.0, 0.0, 1.0);
+       glTranslatef (1.0, 0.0, 0.0);
+       glPushMatrix();
+           glScalef (2.0, 0.4, 1.0);
+           glutWireCube (1.0);
+       glPopMatrix();
 
-   glTranslatef (1.0, 0.0, 0.0);
-   glRotatef ((GLfloat) anguloCutuvelo, 0.0, 0.0, 1.0);
-   glTranslatef (1.0, 0.0, 0.0);
-   glPushMatrix();
-   glScalef (2.0, 0.4, 1.0);
-   glutWireCube (1.0);
-   glPopMatrix();
+       glTranslatef (1.0, 0.0, 0.0);
+       glRotatef ((GLfloat) anguloCutuvelo, 0.0, 0.0, 1.0);
+       glTranslatef (1.0, 0.0, 0.0);
+       glPushMatrix();
+           glScalef (2.0, 0.4, 1.0);
+           glutWireCube (1.0);
+       glPopMatrix();
 
    glPopMatrix();
    glutSwapBuffers();
@@ -83,6 +84,10 @@ int main(int argc, char** argv)
    glutDisplayFunc(desenha);
    glutReshapeFunc(redimensiona);
    glutKeyboardFunc(teclado);
+
+   printf("Aperte:\n\n");
+   printf("\t- 'o' e 'O': para aumentar/diminuir rotação do 'ombro'\n");
+   printf("\t- 'c' e 'C': para aumentar/diminuir rotação do 'cutuvelo'\n\n");
 
    glutMainLoop();
    return 0;
