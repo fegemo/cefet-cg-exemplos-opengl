@@ -3,6 +3,8 @@
 
 typedef struct coords {
     float v[4];
-} ponto, vetor;
+} ponto, vetor, cor;
+
+void imprimeCoords(struct coords*);
 
 #endif

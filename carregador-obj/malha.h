@@ -4,13 +4,15 @@
 #include "coords.h"
 #include "lista.h"
 
+struct vertice {
+    ponto *coordenada;
+    ponto *coordenadaTextura;
+    vetor *normal;
+};
+
 struct face {
-    // ponteiros para (ponto)
-    listaEncadeada coordenadas;
-    // ponteiros para (ponto)
-    listaEncadeada coordenadasTextura;
-    // ponteiros para (vetor)
-    listaEncadeada normais;
+    // no: (struct vertice)
+    listaEncadeada vertices;
 };
 
 struct malha {
@@ -30,5 +32,6 @@ void adicionaCoordenadaTexturaMalha(struct malha*, ponto*);
 void adicionaNormalMalha(struct malha*, vetor*);
 struct face *novaFaceMalha(struct malha *);
 void adicionaVerticeFace(struct malha*, struct face*, int, int, int);
+void imprimeMalha(struct malha*);
 
 #endif

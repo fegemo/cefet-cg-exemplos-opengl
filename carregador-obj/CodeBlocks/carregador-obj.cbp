@@ -2,16 +2,17 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="quadrado-callbacks" />
+		<Option title="carregador-obj" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows">
-				<Option output="bin/quadrado-callbacks" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/carregador-obj" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -23,11 +24,12 @@
 				</Linker>
 			</Target>
 			<Target title="Linux">
-				<Option output="bin/quadrado-callbacks" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/carregador-obj" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -43,7 +45,31 @@
 			<Add option="-Wall" />
 			<Add option="-g" />
 		</Compiler>
+		<Unit filename="../coords.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../coords.h" />
+		<Unit filename="../lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lista.h" />
 		<Unit filename="../main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../malha.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../malha.h" />
+		<Unit filename="../material.h" />
+		<Unit filename="../modelo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../modelo.h" />
+		<Unit filename="../toksplit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../toksplit.h" />
+		<Unit filename="tabela.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
