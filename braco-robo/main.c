@@ -5,43 +5,85 @@ int anguloOmbro = 0, anguloCutuvelo = 0;
 
 void inicializa()
 {
-  glClearColor (0.0, 0.0, 0.0, 0.0);
-  glShadeModel (GL_FLAT);
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_FLAT);
 }
 
-void desenha()
-{
-   glClear (GL_COLOR_BUFFER_BIT);
-   glPushMatrix();
-       glTranslatef (-1.0, 0.0, 0.0);
-       glRotatef ((GLfloat) anguloOmbro, 0.0, 0.0, 1.0);
-       glTranslatef (1.0, 0.0, 0.0);
-       glPushMatrix();
-           glScalef (2.0, 0.4, 1.0);
-           glutWireCube (1.0);
-       glPopMatrix();
-
-       glTranslatef (1.0, 0.0, 0.0);
-       glRotatef ((GLfloat) anguloCutuvelo, 0.0, 0.0, 1.0);
-       glTranslatef (1.0, 0.0, 0.0);
-       glPushMatrix();
-           glScalef (2.0, 0.4, 1.0);
-           glutWireCube (1.0);
-       glPopMatrix();
-
-   glPopMatrix();
-   glutSwapBuffers();
-}
 
 void redimensiona(int w, int h)
 {
-   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-   glMatrixMode (GL_PROJECTION);
-   glLoadIdentity ();
-   gluPerspective(65.0, (GLfloat) w/(GLfloat) h, 1.0, 20.0);
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
-   glTranslatef (0.0, 0.0, -5.0);
+    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
+
+    glMatrixMode (GL_PROJECTION);
+    glLoadIdentity ();
+    // a origem do mundo está no centro da janela (o gluPerspective
+    // é sempre assim)
+    gluPerspective(65.0, (GLfloat) w/(GLfloat) h, 1.0, 20.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    // chega o mundo todo mais pro fundo, pra poder desenhar no z = 0
+    glTranslatef (0.0, 0.0, -5.0);
+}
+
+
+// o braço e ante-braço são cada um uma caixa de tamanho 2 no eixo x, 0,4 no y
+// e 1 de profundidade:
+//  _________
+// /________/|
+// |________|/
+//
+// a glutSolid|WireCube desenha o cubo na origem (e.g., -WIDTH/2, +WIDTH/2...)
+void desenhaParteDoBraco() {
+    glPushMatrix();
+        glScalef (2.0, 0.4, 1.0);
+        glutWireCube (1.0);
+    glPopMatrix();
+}
+
+
+void desenha()
+{
+    // entramos na desenha() com o sistema de coordenadas com origem no centro
+    // da janela
+
+    glClear (GL_COLOR_BUFFER_BIT);
+    glPushMatrix();
+        // -------
+        // o braço (ombro ao cutuvelo), que é desenhado tendo largura = 2
+        //
+        // (1) anda 1 unidade (larg/2) para a esquerda
+        //     (lado esquerdo do braço, que é o ombro),
+        // (2) rotaciona o eixo x graus (referente ao ombro)
+        // (3) devolve o sistema de coordenadas 1 unidade (larg/2) no sentido x
+        //     (não é mais "a direita do mundo")
+        // (4) desenha o braço onde está nosso "cursor" (no 0,0 do sistema de
+        //     coordenadas corrente)
+        glTranslatef (-1.0, 0.0, 0.0);
+        glRotatef ((GLfloat) anguloOmbro, 0.0, 0.0, 1.0);
+        glTranslatef (1.0, 0.0, 0.0);
+        desenhaParteDoBraco();
+
+        // ---------
+        // antebraço (cutuvelo ao punho)
+        //
+        // continuamos com o sistema de coordenadas no centro do braço,
+        // que foi rotacionado pelo ângulo do ombro...
+        //
+        // agora vamos:
+        // (1) mover o cursor para o lado direito do braço (o cutuvelo)
+        // (2) rotacionar o sistema y graus (ref. ao cutuvelo)
+        // (3) andar +1 unidade no eixo x, para chegar até o centro do antebraço
+        // (4) desneha o antebraço
+        glTranslatef (1.0, 0.0, 0.0);
+        glRotatef ((GLfloat) anguloCutuvelo, 0.0, 0.0, 1.0);
+        glTranslatef (1.0, 0.0, 0.0);
+        glPushMatrix();
+            desenhaParteDoBraco();
+        glPopMatrix();
+
+    glPopMatrix();
+    glutSwapBuffers();
 }
 
 void teclado(unsigned char key, int x, int y)
