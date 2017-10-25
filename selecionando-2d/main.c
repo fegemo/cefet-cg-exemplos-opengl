@@ -7,7 +7,7 @@
 #include "lista-encadeada.h"
 #include "geometria.h"
 
-struct lista *lista;
+struct lista *icones;
 struct no *noSelecionado;
 ponto posicaoMouseNoMundo;
 
@@ -15,27 +15,27 @@ ponto posicaoMouseNoMundo;
 void desenhaMinhaCena() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    struct no* noCorrente = lista->inicio;
-    while(noCorrente != NULL) {
+    for (struct no* noCorrente = icones->inicio;
+         noCorrente != NULL;
+         noCorrente = noCorrente->proximo) {
+
         desenhaIcone(*((struct icone*)noCorrente->objeto));
-        noCorrente = noCorrente->proximo;
     }
 
     glFlush();
 }
 
 void iniciaPrograma() {
-    lista = (struct lista*)malloc(sizeof(struct lista));
-    inicializaLista(lista);
+    icones = (struct lista*)malloc(sizeof(struct lista));
+    inicializaLista(icones);
 }
 
 // Inicia algumas variáveis de estado do OpenGL
 void iniciaOpenGL() {
-    // define qual é a cor do fundo
     glClearColor(1.0, 1.0, 1.0, 0.0); // branco
 }
 
-void redimensionada(int width, int height) {
+void redimensiona(int width, int height) {
     float razaoAspecto = (float)width/(float)height;
 
     glViewport(0, 0, width, height);
@@ -72,9 +72,9 @@ void mouseClicado(int button, int state, int x, int y) {
         ponto posicaoNoMundo = converteCoordenadaJanelaParaMundo(x, y);
 
         // percorre a lista de icones, verificando se algum deles foi atingido pelo clique
-        struct no* noCorrente = lista->inicio;
+        struct no* noCorrente = icones->inicio;
         int acertouIcone = 0;
-        printf("indo percorrer icones\n");
+
         noSelecionado = NULL;
         while(noCorrente != NULL && !acertouIcone) {
             struct retangulo retanguloIcone;
@@ -114,7 +114,7 @@ void mouseClicado(int button, int state, int x, int y) {
         novo->tamanho.x = novo->tamanho.y = TAMANHO_DO_ICONE;
         novo->cor = COR_PADRAO_DO_ICONE;
 
-        insereNoFinal(lista, novo, sizeof(struct icone));
+        insereNoFinal(icones, novo, sizeof(struct icone));
     }
 }
 
@@ -145,7 +145,7 @@ int main(int argc, char** argv)
 
     // Registra callbacks para eventos
     glutDisplayFunc(desenhaMinhaCena);
-    glutReshapeFunc(redimensionada);
+    glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclaPressionada);
     glutMouseFunc(mouseClicado);
     glutPassiveMotionFunc(mouseMovimentado);

@@ -1,4 +1,5 @@
 #include "lista-encadeada.h"
+#include <string.h>
 
 struct no* criaNovoNo(void *novoObjeto, size_t tamanhoDoObjetoEmBytes) {
     // Aloca memória para o nó

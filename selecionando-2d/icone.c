@@ -2,7 +2,8 @@
 #include <GL/freeglut.h>
 #include "configuracoes.h"
 
-void desenhaRegiaoRetangular(ponto posicao, dimensoes tamanho) {
+// desenha um retângulo com um certo tamanho na origem
+static void desenhaRegiaoRetangular(dimensoes tamanho) {
     float metadeLargura = tamanho.x/2.0f;
     float metadeAltura = tamanho.y/2.0f;
 
@@ -21,12 +22,12 @@ void desenhaIcone(struct icone icone) {
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glColor3f(icone.cor.x, icone.cor.y, icone.cor.z);
-        desenhaRegiaoRetangular(icone.posicao, icone.tamanho);
+        desenhaRegiaoRetangular(icone.tamanho);
 
         if (icone.situacao == SELECIONADO) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             glColor3f(COR_PADRAO_DA_SELECAO.x, COR_PADRAO_DA_SELECAO.y, COR_PADRAO_DA_SELECAO.z);
-            desenhaRegiaoRetangular(icone.posicao, icone.tamanho);
+            desenhaRegiaoRetangular(icone.tamanho);
 
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }

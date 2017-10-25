@@ -10,6 +10,6 @@ struct retangulo {
 ponto converteCoordenadaJanelaParaMundo(int x, int y);
 
 // Verifica se um retângulo intersecta outro.
-// Returna 1 se verdadeiro ou 0 se falso.
+// Retorna 1 se verdadeiro ou 0 se falso.
 int colideComRetangulo(struct retangulo objeto1, struct retangulo objeto2);
 int colideComPonto(struct retangulo objeto1, ponto objeto2);

@@ -1,7 +1,7 @@
 CC=gcc
-OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL
+OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL -lm
 TODOS_ARQUIVOS_PONTOH =
-TODOS_ARQUIVOS_OBJ = main.o
+TODOS_ARQUIVOS_OBJ = main.o configuracoes.o geometria.o icone.o lista-encadeada.o vetor.o
 
 %.o: ../%.c $(TODOS_ARQUIVOS_PONTOH)
 	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
