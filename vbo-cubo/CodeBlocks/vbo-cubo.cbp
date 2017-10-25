@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="hello-modern" />
+		<Option title="vbo-cubo" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -47,8 +47,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
-			<code_completion />
 			<envvars />
+			<code_completion />
 			<debugger />
 			<lib_finder disable_auto="1" />
 		</Extensions>

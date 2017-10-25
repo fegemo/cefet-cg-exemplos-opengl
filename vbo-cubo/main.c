@@ -1,17 +1,45 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <string.h>
+#include <stdio.h>
 
 #define TRUE 1
 #define FALSE 0
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
-enum TipoArmazenamento {
-  IMMEDIATE_MODE = 0,
-  VERTEX_ARRAYS = 1,
-  VERTEX_BUFFER_OBJECTS = 2
+GLdouble rotacaoCubo = 0;
+
+enum tipoArmazenamento {
+  IMMEDIATE_MODE,
+  VERTEX_ARRAYS,
+  VERTEX_BUFFER_OBJECTS ,
+  QUANTIDADE_DE_TIPOS_DE_ARMAZENAMENTO    // conterá o inteiro: 4
 };
 
-TipoArmazenamento armazenamento = VERTEX_ARRAYS;
-static GLuint vboCubo[1];
+unsigned short int armazenamento = IMMEDIATE_MODE;
+const char* getNomeArmazenamento(unsigned short int tipo) {
+    switch (tipo) {
+        case IMMEDIATE_MODE:
+            return "modo imediatista";
+        case VERTEX_ARRAYS:
+            return "vertex array";
+        case VERTEX_BUFFER_OBJECTS:
+        default:
+            return "VBO";
+    }
+}
+
+enum modo {
+    UM_CUBO,
+    MUITOS_CUBOS,
+    QUANTIDADE_DE_MODOS
+};
+
+unsigned short int modo = UM_CUBO;
+
+
+
+GLuint vboCubo[1];
 
 // cubo ///////////////////////////////////////////////////////////////////////
 //    v6----- v5
@@ -91,18 +119,53 @@ void inicializa() {
     glClearColor(0, 0, 0, 1);
     glEnable(GL_DEPTH_TEST);
 
-    // create vertex buffer objects, you need to delete them when program exits
-    // Try to put both vertex coords array, vertex normal array and vertex color in the same buffer object.
-    // glBufferDataARB with NULL pointer reserves only memory space.
-    // Copy actual data with 2 calls of glBufferSubDataARB, one for vertex coords and one for normals.
-    // target flag is GL_ARRAY_BUFFER_ARB, and usage flag is GL_STATIC_DRAW_ARB
+    // inicializa o VBO que vai armazenar os dados do cubo
+    // é importante que um VBO contenha todos os dados necessários ao desenho
+    // do objeto que ele reprersenta (eg, coords, cores, normais)
+    //
+    // neste VBO, que será criado para o cubo, vamos colocar assim:
+    // coords[v0]
+    // coords[v1]
+    //    ...
+    // coords[vn]
+    // normal[v0]
+    // normal[v1]
+    //    ...
+    // normal[vn]
+    // cor[v0]
+    // cor[v1]
+    //    ...
+    // cor[vn]
+    //
+    // passo 1: pedimos para o opengl criar 1 buffer apenas
     glGenBuffers(1, vboCubo);
+    // passo 2: ativamos o buffer que acabamos de criar (id = vboCubo[0])
     glBindBuffer(GL_ARRAY_BUFFER, vboCubo[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesCubo) + sizeof(normaisCubo) + sizeof(coresCubo), 0, GL_STATIC_DRAW_ARB);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(verticesCubo), verticesCubo);                             // copy vertices starting from 0 offest
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(verticesCubo), sizeof(normaisCubo), normaisCubo);                // copy normals after vertices
-    glBufferSubData(GL_ARRAY_BUFFER, sizeof(verticesCubo) + sizeof(normaisCubo), sizeof(coresCubo), coresCubo);  // copy colours after normals
+    // passo 3: reservamos o espaço necessário para coords + normais + cores
+    glBufferData(GL_ARRAY_BUFFER,
+        sizeof(verticesCubo) + sizeof(normaisCubo) + sizeof(coresCubo),
+        0,
+        GL_STATIC_DRAW);
+    // passos 4-6: copiamos da RAM para VRAM (video ram) o array de coordenadas,
+    //             depois o de normais e por fim o de cores, sempre "saltando"
+    //             espaço para não sobrescrever o que já foi escrito
+    // glBufferSubData(TIPO_DO_BUFFER, offset, tamanho, arrayComOsDados);
+    glBufferSubData(GL_ARRAY_BUFFER,
+        0,                                              // offset
+        sizeof(verticesCubo),                           // tamanho do array
+        verticesCubo);                                  // array de coords
+    glBufferSubData(GL_ARRAY_BUFFER,
+        sizeof(verticesCubo),                           // offset
+        sizeof(normaisCubo),                            // tamanho do array
+        normaisCubo);                                   // array de normais
+    glBufferSubData(GL_ARRAY_BUFFER,
+        sizeof(verticesCubo) + sizeof(normaisCubo),     // offset
+        sizeof(coresCubo),                              // tamanho do array
+        coresCubo);                                     // array de cores
 
+    // por fim, desativamos o VBO (e só o reativamos na hora que formos
+    //  desenhá-lo)
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void redimensiona(int w, int h) {
@@ -110,7 +173,7 @@ void redimensiona(int w, int h) {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60, (float)(w)/h, 1, 1000);
+    gluPerspective(60, (float)(w)/h, 1, 10000);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -179,24 +242,61 @@ void desenhaCubo() {
     }
 }
 
+
+int momentoAnterior;
+float fps = 0;
+
+
+// 100.000 cubos, com 108 vértices cada = ~1 milhão de vértices
+#define QUANTIDADE_CUBOS 100000
+#define RAIZ_QUADRADA_CUBOS 100
+#define METADE_RAIZ_QUADRADA_CUBOS RAIZ_QUADRADA_CUBOS/2.0f
 void desenhaCena() {
+
+    int momentoAtual = glutGet(GLUT_ELAPSED_TIME);
+    int delta = momentoAtual - momentoAnterior;
+
     // apaga a tela para desenhar de novo
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glPushMatrix();
-        glTranslatef(0, 0, -5);
-        glRotatef(30, 1, 0, 0);
-        desenhaCubo();
+
+        switch (modo) {
+            case UM_CUBO:
+            default:
+                gluLookAt(0, 2.5, -5, 0, 0, 0, 0, 1, 0);
+                glRotated(rotacaoCubo, 0, 1, 0);
+                desenhaCubo();
+
+                break;
+            case MUITOS_CUBOS:
+                gluLookAt(0, 5, -10, 0, 0, 0, 0, 1, 0);
+                int i,j;
+                for (i = 0; i < RAIZ_QUADRADA_CUBOS; i++) {
+                    glPushMatrix();
+                        glTranslatef(0, 0, (i-3)*3);
+                        for (j = 0; j < RAIZ_QUADRADA_CUBOS; j++) {
+                            glPushMatrix();
+                                glTranslatef(j*(3) - METADE_RAIZ_QUADRADA_CUBOS, 0, 0);
+                                glRotated(rotacaoCubo, 0, 1, 0);
+                                desenhaCubo();
+                            glPopMatrix();
+                        }
+                  glPopMatrix();
+                }
+                break;
+        }
     glPopMatrix();
+
+
+    // calcula quantos quadros por segundo está chamando a desenha
+    // usamos o MAX(delta, 1) pra evitar divisão por 0
+    fps = 1000.0f / MAX(delta, 1.0f);
+
+    momentoAnterior = momentoAtual;
 
     // troca os buffers e manda desenhar
     glutSwapBuffers();
-}
-
-void atualiza(int id) {
-
-    glutPostRedisplay();
-    glutTimerFunc(0, atualiza, 17);
 }
 
 void teclado(unsigned char key, int x, int y) {
@@ -206,30 +306,60 @@ void teclado(unsigned char key, int x, int y) {
             break;
 
         case ' ':
-            // armazenamento = ((int)armazenamento + 1) % 3;
+            armazenamento = (armazenamento + 1) % QUANTIDADE_DE_TIPOS_DE_ARMAZENAMENTO;
+            // soma 10° na rotação, só pra dar um efeito e mostrar que mudou
+            rotacaoCubo += 10;
+            glutPostRedisplay();
+            break;
+        case 'm':
+        case 'M':
+            modo = (modo + 1) % QUANTIDADE_DE_MODOS;
+            // soma 10° na rotação, só pra dar um efeito e mostrar que mudou
+            rotacaoCubo += 10;
+            glutPostRedisplay();
             break;
     }
 }
 
+void atualiza() {
+    int momentoAtual = glutGet(GLUT_ELAPSED_TIME);
+    int delta = momentoAtual - momentoAnterior;
 
+    // efetivamente atualiza a rotação do cubo
+    rotacaoCubo += 0.01f * delta;
+    if (rotacaoCubo > 360.0f) {
+      rotacaoCubo -= 360.0f;
+    }
 
+    glutPostRedisplay();
+}
+
+char tituloDaJanela[200];
+void atualizaFPS(int idx) {
+    sprintf(tituloDaJanela,
+        "Cubo usando %s (%.2f fps)",
+        getNomeArmazenamento(armazenamento),
+        fps);
+    glutSetWindowTitle(tituloDaJanela);
+    glutTimerFunc(1000, atualizaFPS, 0);
+}
 
 
 int main(int argc, char* argv[]) {
 
     glutInit(&argc, argv);
 
-    glutInitContextVersion(2, 1);
-    glutInitContextProfile(GLUT_CORE_PROFILE);
-    // glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+    glutInitContextVersion(4, 3);
+    glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(400, 400);
+    glutCreateWindow("...");
 
-    glutCreateWindow("Cubo usando VBO");
     glutReshapeFunc(redimensiona);
     glutDisplayFunc(desenhaCena);
-    glutTimerFunc(0, atualiza, 17);
+    glutIdleFunc(atualiza);
+    glutTimerFunc(0, atualizaFPS, 0);
     glutKeyboardFunc(teclado);
 
     glewInit();
