@@ -3,13 +3,15 @@
 #include <GL/freeglut.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 
 GLuint texturaMario;
 
-void init(void)
-{
-    glClearColor (1, 1, 1, 0);
+void inicializa() {
+    glClearColor(1, 1, 1, 1);
+
+    // habilita mesclagem de cores, para termos suporte a texturas (semi-)transparentes
+    glEnable(GL_BLEND );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     texturaMario = SOIL_load_OGL_texture(
         "mario.png",
@@ -17,8 +19,6 @@ void init(void)
         SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_INVERT_Y
 	);
-    glEnable( GL_BLEND );
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 
     if (texturaMario == 0) {
         printf("Erro do SOIL: '%s'\n", SOIL_last_result());
@@ -48,21 +48,19 @@ void desenha(void)
     glutSwapBuffers();
 }
 
-void redimensiona(int w, int h)
-{
-   glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-   glOrtho(-2, 2, -2, 2, -1.0, 1.0);
-   glMatrixMode(GL_MODELVIEW);
+void redimensiona(int w, int h) {
+    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-2, 2, -2, 2, -1.0, 1.0);
+    glMatrixMode(GL_MODELVIEW);
 }
 
-void teclado(unsigned char key, int x, int y)
-{
-   switch (key) {
-      case 27:
-         exit(0);
-   }
+void teclado(unsigned char key, int x, int y) {
+    switch (key) {
+        case 27:
+            exit(0);
+    }
 }
 
 void atualiza() {
@@ -76,13 +74,16 @@ int main(int argc, char** argv)
    glutInitWindowSize(400, 400);
    glutInitWindowPosition(100, 100);
 
-   glutCreateWindow(argv[0]);
-   init();
+   glutCreateWindow("Carregando textura com SOIL");
 
    glutReshapeFunc(redimensiona);
    glutKeyboardFunc(teclado);
    glutDisplayFunc(desenha);
    glutIdleFunc(atualiza);
+
+   inicializa();
+
    glutMainLoop();
+
    return 0;
 }
