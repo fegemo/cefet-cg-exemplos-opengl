@@ -7,14 +7,23 @@
 
 #define ORTOGONAL 1
 #define PERSPECTIVA -1
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 float anguloDeRotacao = 0;
 char ladoQueEstaMostrando[20];
 int projecao = ORTOGONAL;
 
+
+int tempoNoFrame = 0;
+int momentoAnterior;
+float fps = 0;
+
+
 // Rotina de desenho
-void desenhaMinhaCena()
-{
+void desenhaMinhaCena() {
+    int momentoAtual = glutGet(GLUT_ELAPSED_TIME);
+    int delta = momentoAtual - momentoAnterior;
+
     glClear(GL_COLOR_BUFFER_BIT);
 
     glColor3f(0.0, 1.0, 0.0);
@@ -37,14 +46,18 @@ void desenhaMinhaCena()
     glColor3f(0.0, 0.0, 0.0);
     escreveTexto(ladoQueEstaMostrando, 20, 20);
 
+
+    // calcula quantos quadros por segundo está chamando a idle
+    fps = 1000.0f / MAX(delta, 1);
+    momentoAnterior = momentoAtual;
+
     glutSwapBuffers();
 }
 
 // Inicia algumas variáveis de estado do OpenGL
-void setup()
-{
+void inicializa() {
     // define qual é a cor do fundo
-    glClearColor(1.0, 1.0, 1.0, 0.0); // branco
+    glClearColor(1, 1, 1, 1); // branco
 }
 
 void configuraProjecao() {
@@ -63,15 +76,13 @@ void configuraProjecao() {
     glTranslatef(0, 0, -75);
 }
 
-void redimensionada(int width, int height)
-{
+void redimensionada(int width, int height) {
     // left, bottom, right, top
     glViewport(0, 0, width, height);
     configuraProjecao();
 }
 
-void teclaPressionada(unsigned char key, int x, int y)
-{
+void teclaPressionada(unsigned char key, int x, int y) {
     // vê qual tecla foi pressionada
     switch(key)
     {
@@ -96,10 +107,6 @@ void teclaPressionada(unsigned char key, int x, int y)
     }
 }
 
-int tempoNoFrame = 0;
-int momentoAnterior;
-float fps = 0;
-
 void atualiza() {
     int momentoAtual = glutGet(GLUT_ELAPSED_TIME);
     tempoNoFrame += momentoAtual - momentoAnterior;
@@ -113,10 +120,6 @@ void atualiza() {
         }
 
     }
-    // calcula quantos quadros por segundo está chamando a idle
-    fps = 1000.0 / (momentoAtual - momentoAnterior);
-
-    momentoAnterior = momentoAtual;
     glutPostRedisplay();
 }
 
@@ -128,8 +131,7 @@ void atualizaFPS(int idx) {
 }
 
 // Função principal
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     glutInit(&argc, argv);
 
     glutInitContextVersion(1, 1);
@@ -150,7 +152,7 @@ int main(int argc, char** argv)
 
     // Configura valor inicial de algumas
     // variáveis de estado do OpenGL
-    setup();
+    inicializa();
 
     glutMainLoop();
     return 0;
