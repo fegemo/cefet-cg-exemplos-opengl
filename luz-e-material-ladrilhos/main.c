@@ -61,7 +61,8 @@ void carregaTextura(int *textura, char* nomeDoArquivo) {
 /// Configura os materiais (plastico e marrom) e a fonte de luz posicional.
 ///
 void configuraIluminacao() {
-    plasticoAzul.ambiente = (cor){ 0.1, 0.1, 0.1, 1 };
+    // glEnable(GL_LIGHTING);
+    plasticoAzul.ambiente = (cor){ 0.25, 0.25, 0.25, 1 };
     plasticoAzul.emissiva = (cor){ 0, 0, 0, 1 };
     plasticoAzul.difusa = (cor){ 0.1, 0.1, 0.4, 1 };
     plasticoAzul.especular = (cor){ 1, 1, 1, 1 };
@@ -246,6 +247,11 @@ void teclado(unsigned char tecla, int x, int y) {
         case '_':
             subdivisoesLadrilho = fmax(1, subdivisoesLadrilho - 1);
             break;
+        case 'l':
+        case 'L':
+            glDisable(GL_LIGHT0);
+            break;
+
         case 'm':
         case 'M':
             modoSombreamento = (modoSombreamento + 1) % 2;
