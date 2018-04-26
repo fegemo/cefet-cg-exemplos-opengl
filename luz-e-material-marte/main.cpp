@@ -121,13 +121,28 @@ void setup(void)
     glutSetCursor(GLUT_CURSOR_NONE);
 }
 
+// Desenha uma esfera na origem, com certo raio e subdivisões
+// latitudinais e longitudinais
+//
+// Não podemos usar glutSolidSphere, porque ela não chama
+// glTexCoord para os vértices. Logo, se você quer texturizar
+// uma esfera, não pode usar glutSolidSphere
 void solidSphere(int radius, int stacks, int columns)
 {
+    // cria uma quádrica
     GLUquadric* quadObj = gluNewQuadric();
+    // estilo preenchido... poderia ser GLU_LINE, GLU_SILHOUETTE
+    // ou GLU_POINT
     gluQuadricDrawStyle(quadObj, GLU_FILL);
+    // chama 01 glNormal para cada vértice.. poderia ser
+    // GLU_FLAT (01 por face) ou GLU_NONE
     gluQuadricNormals(quadObj, GLU_SMOOTH);
+    // chama 01 glTexCoord por vértice
     gluQuadricTexture(quadObj, GL_TRUE);
+    // cria os vértices de uma esfera
     gluSphere(quadObj, radius, stacks, columns);
+    // limpa as variáveis que a GLU usou para criar
+    // a esfera
     gluDeleteQuadric(quadObj);
 }
 
@@ -236,9 +251,9 @@ void desenhaCena()
         glRotatef(anguloEsferaY, 0, 1, 0);
         glRotatef(90, 1, 0, 0);
         solidSphere(1.5, esferaLados, esferaLados);
-        //glutSolidSphere(1.5, esferaLados, esferaLados);
-        //glutSolidCube(1.5);
-        //glutSolidTeapot(1.5);
+        // glutSolidSphere(1.5, esferaLados, esferaLados);
+        // glutSolidCube(1.5);
+        // glutSolidTeapot(1.5);
     glPopMatrix();
     if (usarTextura) {
         glDisable(GL_TEXTURE_2D);
