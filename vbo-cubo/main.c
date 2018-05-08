@@ -344,6 +344,11 @@ void atualizaFPS(int idx) {
     glutTimerFunc(1000, atualizaFPS, 0);
 }
 
+void instrui() {
+    printf("Instruções:\n");
+    printf("\t'espaço'\tAlterna o modo de armazenamento\n");
+    printf("\t'm'     \tAlterna entre 1 cubo e %d cubos\n", QUANTIDADE_CUBOS);
+}
 
 int main(int argc, char* argv[]) {
 
@@ -364,6 +369,7 @@ int main(int argc, char* argv[]) {
 
     glewInit();
 
+    instrui();
     inicializa();
 
     glutMainLoop();
