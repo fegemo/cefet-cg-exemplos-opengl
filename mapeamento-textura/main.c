@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+#include <stdio.h>
 #include "carregaTextura.h"
 
 #define DIVISOES_ESFERA 20
@@ -43,7 +44,7 @@ void desenhaCena(void)
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
     glScalef(escalaTextura, escalaTextura, 1);
-    // glRotatef(rotacaoTexturaZ, 1, 0, 0);
+    // glRotatef(rotacaoTexturaZ, 0, 0, 1);
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -134,7 +135,7 @@ void teclado(unsigned char key, int x, int y)
 }
 
 void atualiza(int periodo) {
-    rotacaoTexturaZ += 0.001;
+    rotacaoTexturaZ += 0.1;
 
     glutPostRedisplay();
     glutTimerFunc(periodo, atualiza, periodo);
