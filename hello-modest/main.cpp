@@ -73,10 +73,6 @@ void keyInput(unsigned char key, int x, int y)
     }
 }
 
-void update()
-{
-    glutPostRedisplay();
-}
 
 int main(int argc, char* argv[])
 {
@@ -93,7 +89,6 @@ int main(int argc, char* argv[])
     glutDisplayFunc(drawScene);
     glutReshapeFunc(resize);
     glutKeyboardFunc(keyInput);
-    glutIdleFunc(update);
 
     glCheckError();
     glewExperimental = GL_TRUE;
