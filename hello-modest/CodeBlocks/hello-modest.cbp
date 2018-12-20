@@ -12,9 +12,6 @@
 				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-g" />
-				</Compiler>
 				<Linker>
 					<Add library="freeglut" />
 					<Add library="glu32" />
@@ -28,9 +25,6 @@
 				<Option object_output="obj/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Compiler>
-					<Add option="-g" />
-				</Compiler>
 				<Linker>
 					<Add library="glut" />
 					<Add library="GLU" />
@@ -41,12 +35,17 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++14" />
 			<Add option="-g" />
 		</Compiler>
+		<Unit filename="../error.h" />
 		<Unit filename="../main.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../object.cpp" />
+		<Unit filename="../object.h" />
 		<Unit filename="../shader.cpp" />
+		<Unit filename="../shader.h" />
 		<Unit filename="../shaders/fragmentShader.glsl" />
 		<Unit filename="../shaders/vertexShader.glsl" />
 		<Extensions>

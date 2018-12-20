@@ -1,4 +1,6 @@
 #version 430 core
+#pragma debug(on)
+#pragma optimize(off)
 
 in vec4 colorsExport;
 

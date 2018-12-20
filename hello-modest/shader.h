@@ -7,13 +7,14 @@
 #include <string>
 #include <map>
 
-class shader
+class Shader
 {
     public:
-        shader(std::string, std::string);
+        Shader(std::string, std::string);
         void use();
 
         void setUniformMatrixVariable(std::string, glm::mat4);
+        void setUniformMatrixVariable(std::string, float*);
 
     private:
         GLuint vertexShaderId;
@@ -22,6 +23,8 @@ class shader
 
         std::map<std::string, GLuint> uniformLocations;
         std::string loadFromFile(std::string);
+        GLuint compile(GLuint, std::string);
+        GLuint link();
 };
 
 #endif // _SHADER_H_

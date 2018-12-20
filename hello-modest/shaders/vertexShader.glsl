@@ -1,4 +1,6 @@
 #version 430 core
+#pragma debug(on)
+#pragma optimize(off)
 
 layout(location=0) in vec4 squareCoords;
 layout(location=1) in vec4 squareColors;

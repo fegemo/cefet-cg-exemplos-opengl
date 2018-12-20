@@ -1,7 +1,7 @@
 CC=g++
-OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL -std=c++11
-TODOS_ARQUIVOS_PONTOH = shader.h
-TODOS_ARQUIVOS_OBJ = main.o shader.o
+OPCOES_COMPILADOR=-I. -lglut -lGLU -lGLEW -lGL -std=c++14
+TODOS_ARQUIVOS_PONTOH = shader.h object.h error.h
+TODOS_ARQUIVOS_OBJ = main.o shader.o object.o
 
 %.o: ../%.cpp #$(TODOS_ARQUIVOS_PONTOH)
 	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)
