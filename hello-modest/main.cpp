@@ -19,13 +19,13 @@ Shader* colorShader;
 
 
 // Inicializa configurações do OpenGL
-void setup(void)
+void inicializa(void)
 {
-    glClearColor(1.0, 1.0, 1.0, 0.0);
+    glClearColor(1, 1, 1, 1);
     glCheckError();
 
     // configura o programa sombreador a ser usado
-    colorShader = new Shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
+    colorShader = new Shader("shaders/vertex-shader.glsl", "shaders/fragment-shader.glsl");
     colorShader->use();
 
     // configura o objeto que queremos desenhar
@@ -42,7 +42,7 @@ void setup(void)
 }
 
 // Desenha a cena
-void drawScene(void)
+void desenhaCena(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -56,12 +56,12 @@ void drawScene(void)
     glFlush();
 }
 
-void resize(int w, int h)
+void redimensiona(int w, int h)
 {
     glViewport(0, 0, w, h);
 }
 
-void keyInput(unsigned char key, int x, int y)
+void teclado(unsigned char key, int x, int y)
 {
     switch(key)
     {
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 {
     glutInit(&argc, argv);
 
-    glutInitContextVersion(4, 3);
+    glutInitContextVersion(4, 6);
     glutInitContextProfile(GLUT_CORE_PROFILE);
     glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 
@@ -86,15 +86,15 @@ int main(int argc, char* argv[])
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Hello World - Pipeline Programável");
-    glutDisplayFunc(drawScene);
-    glutReshapeFunc(resize);
-    glutKeyboardFunc(keyInput);
+    glutDisplayFunc(desenhaCena);
+    glutReshapeFunc(redimensiona);
+    glutKeyboardFunc(teclado);
 
     glCheckError();
     glewExperimental = GL_TRUE;
     glewInit();
 
-    setup();
+    inicializa();
 
     glutMainLoop();
 

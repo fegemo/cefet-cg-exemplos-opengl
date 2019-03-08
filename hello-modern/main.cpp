@@ -76,7 +76,7 @@ char* leArquivoTexto(char* caminho)
 }
 
 // Inicializa configurações do OpenGL
-void setup(void)
+void inicializa(void)
 {
     glClearColor(1.0, 1.0, 1.0, 0.0);
 
@@ -86,7 +86,7 @@ void setup(void)
     //   - 1 fragment shader
     // Passos para carregar cada um deles:
     //   1. Lê o código fonte (GLSL) do **vertex shader** no arquivo
-    char* vertexShader = leArquivoTexto((char*)"shaders/vertexShader.glsl");
+    char* vertexShader = leArquivoTexto((char*)"shaders/vertex-shader.glsl");
     //   2. Chama glCreateShader(GL_"TIPO"_SHADER) para criar um ID (GLuint)
     //      de um buffer para armazenar este shader
     vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
@@ -100,7 +100,7 @@ void setup(void)
 
 
     // Lê o código fonte (GLSL) do **fragment shader** no arquivo
-    char* fragmentShader = leArquivoTexto((char*)"shaders/fragmentShader.glsl");
+    char* fragmentShader = leArquivoTexto((char*)"shaders/fragment-shader.glsl");
     // Chama glCreateShader para gerar um ID de buffer para o shader
     fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
     // Chama glShaderSource(...) para atrelar o código fonte do shader ao
@@ -200,7 +200,7 @@ void setup(void)
 }
 
 // Desenha a cena
-void drawScene(void)
+void desenhaCena(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -211,12 +211,12 @@ void drawScene(void)
     glFlush();
 }
 
-void resize(int w, int h)
+void redimensiona(int w, int h)
 {
     glViewport(0, 0, w, h);
 }
 
-void keyInput(unsigned char key, int x, int y)
+void teclado(unsigned char key, int x, int y)
 {
     switch(key) {
     case 27:
@@ -231,22 +231,22 @@ int main(int argc, char* argv[])
 {
     glutInit(&argc, argv);
 
-    glutInitContextVersion(4, 3);
+    glutInitContextVersion(4, 6);
     glutInitContextProfile(GLUT_CORE_PROFILE);
     glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
-    glutInitWindowSize(300, 300);
+    glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Hello World - Pipeline Programável");
-    glutDisplayFunc(drawScene);
-    glutReshapeFunc(resize);
-    glutKeyboardFunc(keyInput);
+    glutCreateWindow("Hello World - Pipeline Programavel");
+    glutDisplayFunc(desenhaCena);
+    glutReshapeFunc(redimensiona);
+    glutKeyboardFunc(teclado);
 
     glewExperimental = GL_TRUE;
     glewInit();
 
-    setup();
+    inicializa();
 
     glutMainLoop();
 }
