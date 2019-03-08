@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     glutInitWindowPosition(100, 100);
 
     // abre a janela
-    glutCreateWindow("Quadrado");
+    glutCreateWindow("Hello World");
 
     // registra callbacks para alguns eventos
     glutDisplayFunc(desenhaMinhaCena);

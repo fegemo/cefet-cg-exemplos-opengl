@@ -72,7 +72,7 @@ int main(int argc, char** argv)
    glutInitWindowSize(500, 500);
    glutInitWindowPosition(100, 100);
 
-   glutCreateWindow("Quadrado");
+   glutCreateWindow("Hello World - callbacks");
 
    // Registra callbacks para eventos
    glutDisplayFunc(desenhaMinhaCena);
