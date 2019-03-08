@@ -4,16 +4,15 @@
 float tomCinza = .3;
 float incrementoNoTom = .01f;
 
-void desenhaCena(void)
-{
+void desenhaCena() {
     // Limpa a tela (com a cor definida por glClearColor(r,g,b)) para que
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Come�a a usar a cor amarela
+    // Começa a usar a cor amarela
     glColor3f(tomCinza, tomCinza, tomCinza);
 
-    // Come�a a desenhar um pol�gono com os v�rtices especificados
+    // Começa a desenhar um polígono com os vértices especificados
     glBegin(GL_POLYGON);
         glVertex3f(20, 20, 0);
         glVertex3f(80, 20, 0);
@@ -25,39 +24,36 @@ void desenhaCena(void)
     glFlush();
 }
 
-// Inicia algumas vari�veis de estado
-void inicializa(void)
-{
+// Inicia algumas variáveis de estado
+void inicializa(void) {
     // cor para limpar a tela
-    glClearColor(1, 1, 1, 0);      // branco
+    glClearColor(1, 1, 1, 1);      // branco
 }
 
 // Callback de redimensionamento
-void redimensiona(int w, int h)
-{
+void redimensiona(int w, int h) {
     glViewport(0, 0, 500, 500);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, 100, 0, 100, -1, 1);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
 // Callback de evento de teclado
-void teclado(unsigned char key, int x, int y)
-{
-   switch(key)
-   {
-      // Tecla ESC
-      case 27:
-         exit(0);
-         break;
-      default:
-         break;
-   }
+void teclado(unsigned char key, int x, int y) {
+    switch(key) {
+        // Tecla ESC
+        case 27:
+            exit(0);
+        break;
+        default:
+            break;
+    }
 }
 
-void mudaCor(int idx) {
+void mudaCor(int periodo) {
     // altera a cor do quadrado
     tomCinza += incrementoNoTom;
     if (tomCinza > .8 || tomCinza < .3) {
@@ -65,16 +61,15 @@ void mudaCor(int idx) {
     }
 
     // Pede ao GLUT para redesenhar a tela, assim que poss�vel
-    glutPostRedisplay ();
+    glutPostRedisplay();
 
     // Se registra novamente, para que fique sempre sendo chamada
-    glutTimerFunc(33, mudaCor, 0);
+    glutTimerFunc(periodo, mudaCor, periodo);
 }
 
 // Rotina principal
-int main(int argc, char **argv)
-{
-    // Configura��o inicial da janela do GLUT
+int main(int argc, char **argv) {
+    // Configuração inicial da janela do GLUT
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(500, 500);
@@ -86,8 +81,8 @@ int main(int argc, char **argv)
     glutDisplayFunc(desenhaCena);
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
-    // Registra a fun��o "mudaCor" para executar daqui a 33 milissegundos
-    glutTimerFunc(33, mudaCor, 0);
+    // Registra a função "mudaCor" para executar daqui a 33 milissegundos
+    glutTimerFunc(33, mudaCor, 33);
 
     glutMainLoop();
     return 0;
