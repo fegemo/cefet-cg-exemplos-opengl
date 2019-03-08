@@ -1,3 +1,12 @@
+// ATENÇÃO: se vsync estiver habilitado na placa de vídeo,
+// o FPS reportado será próximo de 60.
+// Para desabilitar vsync para este programa, defina uma variável de ambiente
+// logo antes de executá-lo:
+//    vblank_mode=0 (para placas da Intel)
+//    __GL_SYNC_TO_VBLANK=0 (da NVIDIA)
+//
+// Mais informações na thread: https://stackoverflow.com/questions/17196117/disable-vertical-sync-for-glxgears
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <string.h>
@@ -7,6 +16,14 @@
 #define FALSE 0
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
+// variáveis para cálculo e apresentação do FPS
+char tituloDaJanela[200];
+int momentoAnterior;
+int quadrosNesteSegundo = 0;
+float fps = 0;
+
+
+// variáveis do cubo
 GLdouble rotacaoCubo = 0;
 
 GLfloat verticesCubo[] = {
@@ -81,7 +98,7 @@ void redimensiona(int w, int h) {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(60, (float)(w)/h, 1, 10000);
+    gluPerspective(60, (float)(w)/h, 1, 1000);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -103,15 +120,11 @@ void desenhaCubo() {
     glEnd();
 }
 
-
-int momentoAnterior;
-float fps = 0;
-
-
 void desenhaCena() {
 
     int momentoAtual = glutGet(GLUT_ELAPSED_TIME);
     int delta = momentoAtual - momentoAnterior;
+    quadrosNesteSegundo++;
 
     // apaga a tela para desenhar de novo
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -124,10 +137,6 @@ void desenhaCena() {
 
     glPopMatrix();
 
-
-    // calcula quantos quadros por segundo está chamando a desenha
-    // usamos o MAX(delta, 1) pra evitar divisão por 0
-    fps = 1000.0f / MAX(delta, 1.0f);
 
     momentoAnterior = momentoAtual;
 
@@ -156,8 +165,10 @@ void atualiza() {
     glutPostRedisplay();
 }
 
-char tituloDaJanela[200];
 void atualizaFPS(int periodo) {
+    fps = quadrosNesteSegundo;
+    quadrosNesteSegundo = 0;
+    
     sprintf(tituloDaJanela,
         "Cubo (%.2f fps)",
         fps);
@@ -174,7 +185,7 @@ int main(int argc, char* argv[]) {
     glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(400, 400);
+    glutInitWindowSize(500, 500);
     glutCreateWindow("...");
 
     glutReshapeFunc(redimensiona);

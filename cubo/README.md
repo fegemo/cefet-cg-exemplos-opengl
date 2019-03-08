@@ -1,5 +1,7 @@
 # Cubo
 
+<img src="../docs/cubo.gif" style="float:right; width: 250px">
+
 Um cubo colorido em rotação constante em torno do eixo y.
 
 Características:
@@ -24,7 +26,7 @@ y com uma velocidade constante.
 Este exemplo ilustra como construir um cubo usando GL_TRIANGLES, sendo
 necessário especificar 36 x `glVertex`. Além da definição das coordenadas
 de cada vértice, são definidos também a sua cor e o seu vetor normal (que não
-é de fato usado neste exemplo).
+é de fato usado neste exemplo, pois não há iluminação dinâmica).
 
 Como são 36 vértices/cores/normais, optou-se por usar um vetor (_array_)
 para conter todas as coordenadas, outro para todas as cores e outro para todas
