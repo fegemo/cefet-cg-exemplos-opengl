@@ -13,9 +13,9 @@ Características:
   - marcador de FPS
   - mantém razão de aspecto
   - modo imediatista
-  - vertex arrays
-  - vertex buffer objects (vbos)
-  - benchmark
+  - _vertex arrays_
+  - _vertex buffer objects_ (vbos)
+  - _benchmark_
 
 ## Objetivo
 
