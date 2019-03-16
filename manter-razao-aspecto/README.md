@@ -24,7 +24,7 @@ redimensione a janela, há duas possibilidades:
 Este exemplo mostra como (1) fazer com que o mundo inteiro sempre caiba na
 janela.
 
-![](docs/oblonga.png)
+![](../docs/razao-aspecto-oblonga.png)
 
 Para isso, fixamos a razão de aspecto ideal do mundo, contra a qual estaremos
 utilizando as coordenadas dos objetos da nossa cena. Por exemplo:
@@ -50,4 +50,4 @@ janela.
 
 Sendo assim, há três casos:
 
-![](docs/explicacao.jpg)
+![](../docs/razao-aspecto-explicacao.jpg)
