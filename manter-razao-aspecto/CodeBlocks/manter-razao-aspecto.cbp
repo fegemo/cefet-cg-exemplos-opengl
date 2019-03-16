@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="quadrado-callbacks" />
+		<Option title="manter-razao-aspecto" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows">
-				<Option output="bin/quadrado-callbacks" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/manter-razao-aspecto" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
 				<Option type="0" />
@@ -23,7 +23,7 @@
 				</Linker>
 			</Target>
 			<Target title="Linux">
-				<Option output="bin/quadrado-callbacks" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/manter-razao-aspecto" prefix_auto="1" extension_auto="1" />
 				<Option working_dir=".." />
 				<Option object_output="obj/" />
 				<Option type="0" />
