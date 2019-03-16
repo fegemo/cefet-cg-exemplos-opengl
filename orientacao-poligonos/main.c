@@ -125,7 +125,7 @@ void atualiza() {
 
 char tituloDaJanela[100];
 void atualizaFPS(int idx) {
-    sprintf(tituloDaJanela, "Orientação de Polígonos (%.2f)", fps);
+    sprintf(tituloDaJanela, "Orientacao de Poligonos (%.2f)", fps);
     glutSetWindowTitle(tituloDaJanela);
     glutTimerFunc(1000, atualizaFPS, 0);
 }
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
 
-    glutCreateWindow("Orientação de Polígonos");
+    glutCreateWindow("Orientacao de Poligonos");
 
     // Registra callbacks para eventos
     glutDisplayFunc(desenhaMinhaCena);
