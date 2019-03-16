@@ -1,5 +1,20 @@
 # Mantendo a Razão de Aspecto do Mundo
 
+Características:
+  - 2D
+  - glOrtho
+  - mantém razão de aspecto
+  - modo imediatista
+
+## Objetivo
+
+Ilustrar uma forma para manter a razão de aspecto da aplicação
+para suportar diferentes formatos de janela sem que haja distorção.
+Este exemplo é válido para aplicações 2D, visto que usa
+projeção ortogonal (`glOrtho(...)` ).
+
+## Descrição
+
 Para manter a razão de aspecto do mundo e ainda permitir que o usuário
 redimensione a janela, há duas possibilidades:
 
@@ -30,7 +45,7 @@ glOrtho(0, LARGURA_DO_MUNDO, 0, ALTURA_DO_MUNDO, -1, 1);
 
 Contudo, para poder manter o mundo sempre centralizado na janela e também
 ocupando o maior espaço possível, precisamos definir a nossa
-**janela de pintura** (ou _viewport_) de forma a desenhar em uma subespaço da
+**janela de pintura** (ou _viewport_) de forma a desenhar em um subespaço da
 janela.
 
 Sendo assim, há três casos:
