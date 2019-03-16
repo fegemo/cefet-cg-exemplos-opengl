@@ -43,9 +43,12 @@
 			<Add option="-Wall" />
 			<Add option="-g" />
 		</Compiler>
-		<Unit filename="../main.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="../error.h" />
+		<Unit filename="../main.cpp" />
+		<Unit filename="../shader.cpp" />
+		<Unit filename="../shader.h" />
+		<Unit filename="../shaders/fragment-shader.glsl" />
+		<Unit filename="../shaders/vertex-shader.glsl" />
 		<Extensions>
 			<envvars />
 			<code_completion />
