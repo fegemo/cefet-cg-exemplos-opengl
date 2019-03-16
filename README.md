@@ -12,8 +12,8 @@ Para Windows:
   1. Entre na pasta CodeBlocks (dentro do exemplo de interesse)
   1. Abra o arquivo .cbp
   1. Execute normalmente no CodeBlocks
-    - Você precisa possuir o GLUT (ou freeglut) instalado e ele precisa
-      estar acessível para o compilador do CodeBlocks (normalmente o MinGW)
+     - Você precisa possuir o GLUT (ou freeglut) instalado e ele precisa
+       estar acessível para o compilador do CodeBlocks (normalmente o MinGW)
 
 Para Linux:
   1. Abra um terminal
