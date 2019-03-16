@@ -36,13 +36,11 @@ GLubyte letras[][13] = {
 
 GLuint fontOffset;
 
-void criaFonteMatricial(void)
-{
-    GLuint i, j;
+void criaFonteMatricial() {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     fontOffset = glGenLists(128);
-    for (i = 0, j = 'A'; i < 26; i++, j++) {
+    for (int i = 0, j = 'A'; i < 26; i++, j++) {
         glNewList(fontOffset + j, GL_COMPILE);
             glBitmap(8, 13, 0.0, 2.0, 10.0, 0.0, letras[i]);
         glEndList();
@@ -52,58 +50,54 @@ void criaFonteMatricial(void)
     glEndList();
 }
 
-void init(void)
-{
+void inicializa() {
     criaFonteMatricial();
 }
 
-void escreveTexto(char *s)
-{
+void escreveTexto(char *texto) {
     glPushAttrib(GL_LIST_BIT);
     glListBase(fontOffset);
-    glCallLists(strlen(s), GL_UNSIGNED_BYTE, (GLubyte*) s);
+    glCallLists(strlen(texto), GL_UNSIGNED_BYTE, (GLubyte*) texto);
     glPopAttrib();
 }
 
-void desenha(void)
-{
-    GLfloat corBranca[3] = { 1, 1, 1 };
-
+void desenha() {
     glClear(GL_COLOR_BUFFER_BIT);
-    glColor3fv(corBranca);
+
+    glColor3f(1, 1, 1);
 
     glRasterPos2i(20, 60);
     escreveTexto("THE QUICK BROWN FOX JUMPS");
     glRasterPos2i(20, 40);
     escreveTexto("OVER A LAZY DOG");
+
     glFlush();
 }
 
-void redimensiona(int w, int h)
-{
-    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+void redimensiona(int w, int h) {
+    glViewport(0, 0, w, h);
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho (0.0, w, 0.0, h, -1.0, 1.0);
+
     glMatrixMode(GL_MODELVIEW);
 }
 
-void teclado(unsigned char key, int x, int y)
-{
+void teclado(unsigned char key, int x, int y) {
     switch (key) {
-        case 27:
-            exit(0);
+    case 27:
+        exit(0);
    }
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(300, 100);
     glutInitWindowPosition (100, 100);
     glutCreateWindow("Fontes em OpenGL");
-    init();
+    inicializa();
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
     glutDisplayFunc(desenha);
