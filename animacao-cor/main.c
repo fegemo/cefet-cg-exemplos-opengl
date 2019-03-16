@@ -13,7 +13,7 @@ void desenhaCena() {
     glColor3f(tomCinza, tomCinza, tomCinza);
 
     // Começa a desenhar um polígono com os vértices especificados
-    glBegin(GL_POLYGON);
+    glBegin(GL_TRIANGLE_FAN);
         glVertex3f(20, 20, 0);
         glVertex3f(80, 20, 0);
         glVertex3f(80, 80, 0);
@@ -21,18 +21,18 @@ void desenhaCena() {
     glEnd();
 
     // Diz ao OpenGL para colocar o que desenhamos na tela
-    glFlush();
+    glutSwapBuffers();
 }
 
 // Inicia algumas variáveis de estado
-void inicializa(void) {
+void inicializa() {
     // cor para limpar a tela
     glClearColor(1, 1, 1, 1);      // branco
 }
 
 // Callback de redimensionamento
 void redimensiona(int w, int h) {
-    glViewport(0, 0, 500, 500);
+    glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, 100, 0, 100, -1, 1);
@@ -71,7 +71,7 @@ void mudaCor(int periodo) {
 int main(int argc, char **argv) {
     // Configuração inicial da janela do GLUT
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
+    glutInitDisplayMode(GLUT_DOUBLE| GLUT_RGBA);
     glutInitWindowSize(500, 500);
     glutInitWindowPosition(100, 100);
 
@@ -81,8 +81,8 @@ int main(int argc, char **argv) {
     glutDisplayFunc(desenhaCena);
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
-    // Registra a função "mudaCor" para executar daqui a 33 milissegundos
-    glutTimerFunc(33, mudaCor, 33);
+    // Registra a função "mudaCor" para executar daqui a 0 ms
+    glutTimerFunc(0, mudaCor, 33);
 
     glutMainLoop();
     return 0;
