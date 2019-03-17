@@ -29,7 +29,7 @@ GLuint carregaTextura(const char* arquivo)
     int largura, altura, canais;
     unsigned char* texels = SOIL_load_image(arquivo, &largura, &altura, &canais, SOIL_LOAD_RGBA);
 
-    // inverte o eixo t
+    // inverte o eixo t (a SOIL_load_OGL_texture fazia isso automaticamente...)
     for(int j = 0; j < altura / 2; j++ )
     {
         int index1 = j * largura * 4;
@@ -52,8 +52,7 @@ GLuint carregaTextura(const char* arquivo)
     // libera a RAM que estava guardando a textura (já que ela já foi para a VRAM)
     SOIL_free_image_data(texels);
 
-    if (texels == nullptr)
-    {
+    if (texels == nullptr) {
         printf("Erro do SOIL '%s' tentando carregar o arquivo '%s'.\n", SOIL_last_result(), arquivo);
     }
 
@@ -62,12 +61,9 @@ GLuint carregaTextura(const char* arquivo)
 
 
 // Inicializa configurações do OpenGL
-void inicializa(void)
-{
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-
-
+void inicializa() {
     glCheckError();
+    glClearColor(1.0, 1.0, 1.0, 1.0);
 
     // configura o programa sombreador a ser usado
     colorTextureShader = new Shader("shaders/vertexShader.glsl", "shaders/fragmentShader.glsl");
@@ -99,8 +95,7 @@ void inicializa(void)
 }
 
 // Desenha a cena
-void desenhaCena(void)
-{
+void desenhaCena() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     square->use();
@@ -117,15 +112,12 @@ void desenhaCena(void)
     glFlush();
 }
 
-void redimensiona(int w, int h)
-{
+void redimensiona(int w, int h) {
     glViewport(0, 0, w, h);
 }
 
-void teclado(unsigned char key, int x, int y)
-{
-    switch(key)
-    {
+void teclado(unsigned char key, int x, int y) {
+    switch(key) {
     case 27:
         exit(0);
         break;
@@ -135,24 +127,22 @@ void teclado(unsigned char key, int x, int y)
 }
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
 
-    glutInitContextVersion(4, 3);
+    glutInitContextVersion(4, 6);
     glutInitContextProfile(GLUT_CORE_PROFILE);
     glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(400, 400);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Carregando textura com SOIL - Pipeline Programável");
+    glutCreateWindow("Carregando textura com SOIL - Pipeline Programavel");
     glutDisplayFunc(desenhaCena);
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
 
     glCheckError();
-    glewExperimental = GL_TRUE;
     glewInit();
 
     inicializa();
