@@ -5,8 +5,7 @@
 GLfloat anguloDeRotacao = 0;
 GLfloat incrementoAngulo = 0.5;
 
-void desenhaCena(void)
-{
+void desenhaCena() {
     // Limpa a tela (com a cor definida por glClearColor(r,g,b)) para que
     // possamos desenhar
     glClear(GL_COLOR_BUFFER_BIT);
@@ -15,11 +14,12 @@ void desenhaCena(void)
     glColor3f(.5, .5, 1);
 
     glPushMatrix();
-        // Multiplica a matriz corrente (topo da stack MODELVIEW) pela matriz de rotação
+        // Multiplica a matriz corrente (topo da stack MODELVIEW)
+        // pela matriz de rotação
         glRotatef(anguloDeRotacao, 0, 0, 1);
 
         // Começa a desenhar um polígono com os vértices especificados
-        glBegin(GL_POLYGON);
+        glBegin(GL_TRIANGLE_FAN);
             glVertex2f(-30, -30);
             glVertex2f( 30, -30);
             glVertex2f( 30,  30);
@@ -31,10 +31,7 @@ void desenhaCena(void)
     glutSwapBuffers();
 }
 
-// Inicia algumas variáveis de estado
-void inicializa(void)
-{
-    // cor para limpar a tela
+void inicializa() {
     glClearColor(0, 0, 0, 0);      // preto
 
     printf("Comandos:\n---------\n\n");
@@ -42,27 +39,25 @@ void inicializa(void)
     printf("\t-  Diminui o incremento no angulo\n\n");
 }
 
-// Callback de redimensionamento
-void redimensiona(int w, int h)
-{
-   glViewport(0, 0, w, h);
-   glMatrixMode(GL_PROJECTION);
-   glLoadIdentity();
-   glOrtho(-100, 100, -100, 100, -1, 1);
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
+void redimensiona(int w, int h) {
+    glViewport(0, 0, w, h);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-100, 100, -100, 100, -1, 1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
-void atualiza(int idx) {
+void atualiza(int periodo) {
     anguloDeRotacao += incrementoAngulo;
 
     glutPostRedisplay();
-    glutTimerFunc(17, atualiza, 0);
+    glutTimerFunc(periodo, atualiza, periodo);
 }
 
-// Callback de evento de teclado
-void teclado(unsigned char key, int x, int y)
-{
+void teclado(unsigned char key, int x, int y) {
     switch(key)
     {
         // Tecla ESC
@@ -81,9 +76,7 @@ void teclado(unsigned char key, int x, int y)
 }
 
 // Rotina principal
-int main(int argc, char **argv)
-{
-    // Configuração inicial da janela do GLUT
+int main(int argc, char **argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowSize(500, 500);
@@ -96,7 +89,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(desenhaCena);
     glutReshapeFunc(redimensiona);
     glutKeyboardFunc(teclado);
-    glutTimerFunc(0, atualiza, 0);
+    glutTimerFunc(0, atualiza, 17);
     inicializa();
 
     // Entra em loop e nunca sai
