@@ -1,8 +1,8 @@
 
 CC=gcc
 OPCOES_COMPILADOR=-I. -I/../SOIL -lglut -lGLU -lGLEW -lGL -lSOIL -lm
-TODOS_ARQUIVOS_PONTOH =
-TODOS_ARQUIVOS_OBJ = main.o
+TODOS_ARQUIVOS_PONTOH = ../coordenadas.h ../texto.h
+TODOS_ARQUIVOS_OBJ = ../main.o ../coordenadas.o ../texto.o
 
 %.o: ../%.c $(TODOS_ARQUIVOS_PONTOH)
 	$(CC) -o $@ -c $< $(OPCOES_COMPILADOR)

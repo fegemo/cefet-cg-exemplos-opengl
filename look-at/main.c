@@ -6,137 +6,240 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include "coordenadas.h"
+#include "texto.h"
+#include "camera.h"
 
-
-enum CAMERAS { TERCEIRA_PESSOA = 1, PRIMEIRA_PESSOA, ESTATICA };
-int modoCAM = TERCEIRA_PESSOA;            //variável responsável por guardar o modo de câmera que está sendo utilizado
-
-int xMouse = 0, yMouse = 0;     //variáveis globais que serão usadas na função posicionaCamera
-int xCursor, yCursor, zCursor;  //guarda o centro do cursor
-float phi = 90, teta = 0;       //ângulos das coordenadas esféricas
-
+// modos de câmera disponíveis e qual é o modo atual
+//enum CAMERAS { TERCEIRA_PESSOA = 0, PRIMEIRA_PESSOA, ESTATICA };
+// int modoCamera = TERCEIRA_PESSOA;
 
 // estrutura de dados que representará as coordenadas da câmera
-struct {
-  float x, y, z;
-  float targetX, targetY, targetZ;
-} camera;
+// e uma variável que é um vetor de câmeras
+//typedef struct {
+//  ponto posicao;
+//  ponto alvo;
+//  vetor cima;
+//} Camera;
+//Camera cameras[3];
+//Camera *camera = &cameras[ESTATICA];
+Camera camera;
+
+//char *textoCameraAtual = "Estatica (3)";
 
 
-void teclado(unsigned char key, int x, int y) {
-    switch (key) {
-        case 27:    //aperte ESC para fechar
-            exit(0);
-            break;
-        case 's':   //andar pelo plano X-Z utilizando W A S D
-            xCursor++;
-            break;
-        case 'w':
-            xCursor--;
-            break;
-        case 'a':
-            zCursor++;
-            break;
-        case 'd':
-            zCursor--;
-            break;
-        case '1':
-            modoCAM = TERCEIRA_PESSOA;
-            break;
-        case '2':
-            modoCAM = PRIMEIRA_PESSOA;
-            break;
-        case '3':
-            modoCAM = ESTATICA;
-        default:
-            break;
+int windowWidth;
+int windowHeight;
+
+//int xMouse = 0, yMouse = 0;     //variáveis globais que serão usadas na função posicionaCamera
+//int xCursor, yCursor, zCursor;  //guarda o centro do cursor
+//float phi = 0, teta = 0;       //ângulos das coordenadas esféricas
+
+
+//void moverParaFrente(int sentido) {
+//    vetor frente = diferencaEntrePontos(cameras[PRIMEIRA_PESSOA].alvo, cameras[PRIMEIRA_PESSOA].posicao);
+//    frente = multiplicaPorEscalar(frente, sentido);
+//    frente = normalizado(frente);
+//
+//    // switch (modoCamera) {
+//    // case TERCEIRA_PESSOA:
+//    //     break;
+//    // case PRIMEIRA_PESSOA:
+//    cameras[PRIMEIRA_PESSOA].posicao = somaPontoComVetor(cameras[PRIMEIRA_PESSOA].posicao, frente);
+//    //     break;
+//    // default:
+//    //     break;
+//    // }
+//}
+
+//void moverParaLado(int sentido) {
+//    vetor frente = diferencaEntrePontos(cameras[PRIMEIRA_PESSOA].alvo, cameras[PRIMEIRA_PESSOA].posicao);
+//    frente = normalizado(frente);
+//
+//    vetor lado = produtoVetorial(frente, cameras[PRIMEIRA_PESSOA].cima);
+//    lado = multiplicaPorEscalar(lado, sentido);
+//
+//    cameras[PRIMEIRA_PESSOA].posicao = somaPontoComVetor(cameras[PRIMEIRA_PESSOA].posicao, lado);
+//    cameras[PRIMEIRA_PESSOA].alvo = somaPontoComVetor(cameras[PRIMEIRA_PESSOA].alvo, lado);
+//}
+
+//void teclado(unsigned char key, int x, int y) {
+//    switch (key) {
+//        case 27:    //aperte ESC para fechar
+//            exit(0);
+//            break;
+//        //andar pelo plano X-Z utilizando W A S D
+//        case 's':
+//        case 'S':
+////             xCursor++;
+//            moverParaFrente(-1);
+//            break;
+//        case 'w':
+//        case 'W':
+//            // xCursor--;
+//            moverParaFrente(+1);
+//            break;
+//        case 'a':
+//        case 'A':
+//            moverParaLado(-1);
+//            break;
+//        case 'd':
+//        case 'D':
+//            moverParaLado(+1);
+//            break;
+//            recebeTecladoCamera(camera, key);
+//        case '1':
+//            camera = &cameras[TERCEIRA_PESSOA];
+//            // modoCamera = TERCEIRA_PESSOA;
+//            textoCameraAtual = "Terceira pessoa (1)";
+//            break;
+//        case '2':
+//            camera = &cameras[PRIMEIRA_PESSOA];
+//            // modoCamera = PRIMEIRA_PESSOA;
+//            textoCameraAtual = "Primeira pessoa (2)";
+//            break;
+//        case '3':
+//            camera = &cameras[ESTATICA];
+//            // modoCamera = ESTATICA;
+//            textoCameraAtual = "Estatica (3)";
+//        default:
+//            break;
+//    }
+//}
+
+void teclado2(unsigned char tecla, int x, int y) {
+    switch (tecla) {
+    case 'w':
+    case 'W':
+    case 's':
+    case 'S':
+    case 'd':
+    case 'D':
+    case 'a':
+    case 'A':
+        recebeTecladoCamera(&camera, tecla);
+        glutPostOverlayRedisplay();
+        break;
+    case 27:
+        exit(0);
+        break;
     }
 }
 
-//capturar posicionamento do mouse
-void posicionaCamera(int x, int y){
-    // variáveis que guardam o vetor 2D de movimento do mouse na tela
-    // xMouse e yMouse são os valores de x e y no frame anterior
-    float xChange = x - xMouse;
-    float yChange = y - yMouse;
+// callback de mudança na posição do mouse
+//void posicionaCamera(int x, int y) {
+//    // variáveis que guardam o vetor 2D de movimento do mouse na tela
+//    // xMouse e yMouse são os valores de x e y no frame anterior
+//    float xChange = ((float)x - xMouse) / larguraTela;
+//    float yChange = ((float)y - yMouse) / alturaTela;
+//
+//    // vetor desvio = { xChange / larguraTela, -yChange / alturaTela, 0, 0 };
+//    teta += xChange;
+//    phi += yChange;
+//    vetor desvio = { 0, 0, 0, 0 };
+//    desvio.x = sin(teta * M_PI / 180);
+//    desvio.z = cos(teta* M_PI / 180);
+//    desvio.y = sin(phi* M_PI / 180);
+//    desvio = multiplicaPorEscalar(desvio, .2);
+//
+//    vetor frente = normalizado(diferencaEntrePontos(cameras[PRIMEIRA_PESSOA].alvo, cameras[PRIMEIRA_PESSOA].posicao));
+//    vetor lado = normalizado(produtoVetorial(frente, cameras[PRIMEIRA_PESSOA].cima));
+//    float anguloDaCameraEmXZ = anguloEntreVetores(frente, lado);
+//
+//    // switch (modoCamera) {
+//    // case TERCEIRA_PESSOA:
+//    //     break;
+//    // case PRIMEIRA_PESSOA:
+//    cameras[PRIMEIRA_PESSOA].alvo = somaPontoComVetor(cameras[PRIMEIRA_PESSOA].alvo, desvio);
+//    //     break;
+//    //
+//    // case ESTATICA:
+//    // default:
+//    //     break;
+//    // }
+//
+//    // guarda o x e y do mouse para usar na comparação do próximo frame
+//    xMouse = x;
+//    yMouse = y;
+//
+//    if (x > larguraTela * 0.8 || x < larguraTela * 0.2 || y > alturaTela * 0.8 || y < alturaTela * 0.2) {
+//      glutWarpPointer(larguraTela / 2, alturaTela / 2);
+//    }
+//}
 
-    // este exemplo usa coordenadas esféricas para controlar a câmera...
-    // teta e phi guardam a conversão do vetor 2D para um espaço 3D
-    // com coordenada esférica
-    teta = (teta + xChange/150);
-    phi = (phi - yChange/150);
+void posicionaCamera2(int x, int y) {
 
-    if(phi >= 180){
-      //limite de 180 para o phi
-      phi = 180;
+    float xMouseNaCamera = ((float) x) / windowWidth * 2 - 1;
+    float yMouseNaCamera = ((float) windowHeight - y) / windowHeight * 2 - 1;
+
+    recebeMouseCamera(&camera, xMouseNaCamera, yMouseNaCamera);
+
+    // mantém o mouse dentro da janela, fazendo uma revolução quando chega
+    // em um canto
+    if (xMouseNaCamera > 0.98f) {
+        glutWarpPointer(0.01f * windowWidth, y);
+        camera.cursorMouse.x = -0.98f;
+    } else if (xMouseNaCamera < -0.98f) {
+        glutWarpPointer(0.99f * windowWidth, y);
+        camera.cursorMouse.x = 0.98f;
     }
 
-    // guarda o x e y do mouse para usar na comparação do próximo frame
-    xMouse = x;
-    yMouse = y;
+    glutPostOverlayRedisplay();
 }
-
 
 // callback de atualização
-void atualiza(int time) {
+void atualiza(int timer) {
     glutPostRedisplay();
-    glutTimerFunc(time, atualiza, time);
+    glutTimerFunc(timer, atualiza, timer);
 }
 
 void redimensiona(int w, int h){
-    glEnable(GL_DEPTH_TEST);                // Ativa o Z buffer
-    glViewport (0, 0, w, h);                //define a proporção da janela de visualização
-    glMatrixMode (GL_PROJECTION);           //define o tipo de matriz de transformação que será utilizada
+    windowWidth = w;
+    windowHeight = h;
+    glViewport(0, 0, w, h);                //define a proporção da janela de visualização
+
+    glMatrixMode(GL_PROJECTION);           //define o tipo de matriz de transformação que será utilizada
     glLoadIdentity();                       //carrega a matriz identidade do tipo GL_PROJECTION configurado anteriormente
     gluPerspective(60.0, (float)w/(float)h, 0.2, 400.0);    //funciona como se fosse o glOrtho, mas para o espaço 3D
+
     glMatrixMode(GL_MODELVIEW);                             //ativa o modo de matriz de visualização para utilizar o LookAt
+    glLoadIdentity();                       //carrega a matriz identidade do tipo GL_PROJECTION configurado anteriormente
 }
 
 void inicializa(){
-    glClearColor(1, 1, 1, 1);                          //cor de fundo branca
-    glEnable(GL_BLEND);                                //ativa a mesclagem de cores
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //ativando o blend, podemos criar objetos transparentes
-    xCursor = 0;                                       //a câmera começa olhando para o ponto 0
-    yCursor = 0;
-    zCursor = 0;
+    glClearColor(1, 1, 1, 1);                           // cor de fundo branca
+    glEnable(GL_DEPTH_TEST);                            // ativa o Z buffer
+    glEnable(GL_BLEND);                                 // ativa a mesclagem de cores
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  // ativando o blend, podemos criar objetos transparentes
+    // inicializa as três câmeras
+    // cameras[TERCEIRA_PESSOA] = ;
+//    cameras[PRIMEIRA_PESSOA] = (Camera){
+//      {0, 0, 200, 1},
+//      {0, 0,   0, 1},
+//      {0, 1,   0, 0}
+//    };
+//    cameras[ESTATICA] = (Camera){
+//      {0, 0, 200, 1},
+//      {0, 0,   0, 1},
+//      {0, 1,   0, 0}
+//    };
+
+    inicializaCamera(&camera);
 }
 
-//função que desenhará tudo o que aparece na tela
 void desenhaCena() {
-    //esfera de raio 100
-    camera.x = 100 * sin(phi) * cos(teta);  //coordenada x denotada em coordenadas esféricas
-    camera.z = 100 * sin(phi) * sin(teta); //coordenada z denotada em coordenadas esféricas
-    camera.y = 100 * cos(phi);          //coordenada y denotada em coordenadas esféricas
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // carrega a matriz identidade do modelo de visualização,
     // sempre utilize antes de usar LookAt
     glLoadIdentity();
 
-    //define um LookAt diferente para cada modo da câmera, veja abaixo o
-    // uso de cada um
-    switch (modoCAM) {
-    case TERCEIRA_PESSOA:
-        gluLookAt(xCursor+camera.x, camera.y, zCursor+camera.z,//câmera posicionada na casca da esfera calculada (terceira pessoa)
-            xCursor+0, 0, zCursor+0,                          //centro da esfera, o ponto em que estamos olhando
-            0, 1, 0);                                        //vetor UP, apontando para o eixo Y (para cima)
-        break;
-
-    case PRIMEIRA_PESSOA:
-        gluLookAt( xCursor+0, 0, zCursor+0,                    //já aqui, a câmera está posicionada no centro da esfera
-            xCursor+camera.x, camera.y, zCursor+camera.z,     //e a câmera estará olhando para a casca da esfera (primeira pessoa)
-            0, 1, 0);                                        //vetor UP, apontando para o eixo Y (para cima)
-        break;
-
-    case ESTATICA:
-    default:
-        gluLookAt(0, 0, 200,   // Z=200
-                  0, 0, 0,    // (0, 0, 0) origem do mundo
-                  0, 1, 0);  //nesse exemplo mais simples, estamos no ponto Z=200 olhando para o ponto 0
-        break;
-    }
-
+//    gluLookAt(
+//      camera->posicao.x, camera->posicao.y, camera->posicao.z,
+//      camera->alvo.x, camera->alvo.y, camera->alvo.z,
+//      camera->cima.x, camera->cima.y, camera->cima.z
+//    );
+    posicionaCamera(&camera);
 
     // desenha uma linda jarra em (0, 0, 0)
     glColor3f(0, 0, 0);
@@ -153,6 +256,8 @@ void desenhaCena() {
         glutWireCube(105);
     glPopMatrix();
 
+//    escreveTexto(GLUT_BITMAP_HELVETICA_18, textoCameraAtual, 20, 40, 0);
+
     glutSwapBuffers();
 }
 
@@ -163,8 +268,7 @@ int main(int argc, char *argv[]) {
     glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
 
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowSize(1280, 720);
-    glutInitWindowPosition (0, 0);
+    glutInitWindowSize(800, 600);
 
     glutCreateWindow("Exemplo LookAt");
     // glutEnterGameMode();                 // fullscreen baby! (retire o comentário para ativar a tela cheia)
@@ -176,9 +280,9 @@ int main(int argc, char *argv[]) {
     // atualização próxima de 60fps (1000/16 = 62.5 fps
     glutTimerFunc(16, atualiza, 16);
 
-    glutKeyboardFunc(teclado);
+    glutKeyboardFunc(teclado2);
     // usada para capturar o posicionamento do mouse
-    glutPassiveMotionFunc(posicionaCamera);
+    glutPassiveMotionFunc(posicionaCamera2);
 
     inicializa();
     glutMainLoop();
