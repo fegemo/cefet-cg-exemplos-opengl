@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <stdio.h>
-#include "print-matrix.h"
+#include "imprime-matriz.h"
 
 void desenhaCena(void)
 {
@@ -34,18 +34,18 @@ void inicializa(void)
 // Callback de redimensionamento
 void redimensiona(int w, int h)
 {
-   glViewport(0, 0, w, h);
-   glMatrixMode(GL_PROJECTION);
-   printf("Matrix GL_PROJECTION inicial:\n");
-   printOpenGLMatrix(GL_PROJECTION_MATRIX);
-   glLoadIdentity();
-   glOrtho(0, 100, 0, 100, -1, 1);
+    glViewport(0, 0, w, h);
+    glMatrixMode(GL_PROJECTION);
+    printf("Matrix GL_PROJECTION inicial:\n");
+    imprimeMatrizOpenGL(GL_PROJECTION_MATRIX);
+    glLoadIdentity();
+    glOrtho(0, 100, 0, 100, -1, 1);
 
-   printf("Matrix GL_PROJECTION após glOrtho:\n");
-   printOpenGLMatrix(GL_PROJECTION_MATRIX);
+    printf("Matrix GL_PROJECTION após glOrtho:\n");
+    imprimeMatrizOpenGL(GL_PROJECTION_MATRIX);
 
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 // Callback de evento de teclado
