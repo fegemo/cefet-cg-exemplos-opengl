@@ -43,13 +43,13 @@
 			<Add option="-Wall" />
 			<Add option="-g" />
 		</Compiler>
+		<Unit filename="../imprime-matriz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../imprime-matriz.h" />
 		<Unit filename="../main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../print-matrix.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../print-matrix.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
